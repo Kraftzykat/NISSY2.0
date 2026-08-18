@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="/static/favicon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — NIS Grenada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── Theme Variables ─── */
+:root {
+  --nis-primary: #00A859;
+  --nis-primary-dark: #00854A;
+  --nis-accent: #FFD100;
+  --nis-accent-dark: #E6BC00;
+  --nis-flag-red: #CE1126;
+  --bg: #09090B;
+  --bg2: #111318;
+  --fg: #FFFFFF;
+  --secondary: #B8BCC8;
+  --muted: #80858F;
+  --glass: rgba(255,255,255,.04);
+  --glass-border: rgba(255,255,255,.06);
+  --header-bg: rgba(9,9,11,.85);
+  --chat-header-border: rgba(0,168,89,.12);
+  --chip-bg: rgba(0,168,89,.06);
+  --chip-border: rgba(0,168,89,.1);
+  --chip-hover-bg: rgba(0,168,89,.12);
+  --chip-hover-color: var(--nis-primary);
+  --gradient-1: var(--nis-primary);
+  --gradient-2: var(--nis-accent);
+  --radius: 16px;
+  --radius-lg: 22px;
+  --radius-sm: 10px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Space Grotesk', var(--font-sans);
+  --max-w: 1320px;
+}
+[data-theme="light"] {
+  --bg: #f5f5f7;
+  --bg2: #ffffff;
+  --fg: #1a1a2e;
+  --secondary: #4a4a6a;
+  --muted: #8888a0;
+  --glass: rgba(0,0,0,.03);
+  --glass-border: rgba(0,0,0,.06);
+  --header-bg: rgba(255,255,255,.9);
+  --chip-bg: rgba(0,168,89,.04);
+  --chip-border: rgba(0,168,89,.08);
+  --chip-hover-bg: rgba(0,168,89,.08);
+  --chip-hover-color: var(--nis-primary-dark);
+  --gradient-1: var(--nis-primary-dark);
+  --gradient-2: var(--nis-accent-dark);
+}
+[data-theme="purple"] {
+  --bg: #0a0a12;
+  --bg2: #12101e;
+  --fg: #f0ecff;
+  --secondary: #b8b0d4;
+  --muted: #7a72a0;
+  --glass: rgba(120,80,255,.04);
+  --glass-border: rgba(120,80,255,.08);
+  --header-bg: rgba(10,10,18,.85);
+  --chip-bg: rgba(120,80,255,.06);
+  --chip-border: rgba(120,80,255,.1);
+  --chip-hover-bg: rgba(120,80,255,.12);
+  --chip-hover-color: #a78bfa;
+  --gradient-1: #7c3aed;
+  --gradient-2: #ec4899;
+  --nis-primary: #7c3aed;
+  --nis-primary-dark: #6d28d9;
+  --nis-accent: #ec4899;
+  --nis-accent-dark: #db2777;
+}
+[data-theme="ocean"] {
+  --bg: #0a0e17;
+  --bg2: #0f172a;
+  --fg: #e0f2fe;
+  --secondary: #94a3b8;
+  --muted: #64748b;
+  --glass: rgba(6,182,212,.04);
+  --glass-border: rgba(6,182,212,.08);
+  --header-bg: rgba(10,14,23,.85);
+  --chip-bg: rgba(6,182,212,.06);
+  --chip-border: rgba(6,182,212,.1);
+  --chip-hover-bg: rgba(6,182,212,.12);
+  --chip-hover-color: #22d3ee;
+  --gradient-1: #06b6d4;
+  --gradient-2: #3b82f6;
+  --nis-primary: #06b6d4;
+  --nis-primary-dark: #0891b2;
+  --nis-accent: #3b82f6;
+  --nis-accent-dark: #2563eb;
+}
+[data-theme="amber"] {
+  --bg: #0f0b07;
+  --bg2: #1a120a;
+  --fg: #fef3c7;
+  --secondary: #d4a574;
+  --muted: #926d42;
+  --glass: rgba(245,158,11,.04);
+  --glass-border: rgba(245,158,11,.08);
+  --header-bg: rgba(15,11,7,.85);
+  --chip-bg: rgba(245,158,11,.06);
+  --chip-border: rgba(245,158,11,.1);
+  --chip-hover-bg: rgba(245,158,11,.12);
+  --chip-hover-color: #fbbf24;
+  --gradient-1: #f59e0b;
+  --gradient-2: #ef4444;
+  --nis-primary: #f59e0b;
+  --nis-primary-dark: #d97706;
+  --nis-accent: #ef4444;
+  --nis-accent-dark: #dc2626;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--fg);min-height:100vh;overflow-x:hidden;transition:background .4s,color .4s}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ─── Background Layers ─── */
+.bg-layers{position:fixed;inset:0;pointer-events:none;z-index:0}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(350px);opacity:.08;pointer-events:none}
+.bg-glow-1{width:700px;height:700px;background:#3B82F6;top:-200px;left:10%;animation:glowFloat 20s ease-in-out infinite}
+.bg-glow-2{width:500px;height:500px;background:#7C4DFF;top:10%;right:5%;animation:glowFloat 25s ease-in-out infinite 5s}
+.bg-glow-3{width:600px;height:600px;background:#0a0f1a;top:40%;left:50%;transform:translateX(-50%);animation:glowFloat 18s ease-in-out infinite 10s}
+.bg-glow-4{width:500px;height:500px;background:#3B82F6;bottom:0;left:30%;animation:glowFloat 22s ease-in-out infinite 8s}
+@keyframes glowFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-40px)}}
+.bg-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");background-size:200px}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:64px 64px;animation:gridScroll 80s linear infinite}
+@keyframes gridScroll{to{background-position:64px 64px}}
+
+/* ─── Header ─── */
+.demo-page{display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:1}
+.demo-header{position:fixed;top:0;left:0;right:0;z-index:100;height:80px;background:var(--header-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--chat-header-border);display:flex;align-items:center;padding:0 32px;transition:background .4s,border-color .4s}
+.demo-header-inner{max-width:var(--max-w);margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.demo-logo{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:20px;font-weight:700;text-decoration:none;color:var(--fg);transition:color .4s}
+.demo-logo img{width:36px;height:36px;border-radius:9px;object-fit:cover;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.demo-nav{display:flex;align-items:center;gap:12px}
+.demo-nav a{font-size:14px;font-weight:600;color:var(--secondary);text-decoration:none;padding:6px 10px;border-radius:8px;transition:color .2s,background .2s}
+.demo-nav a:hover{color:var(--nis-primary);background:var(--chip-hover-bg)}
+.demo-nav a.active{color:var(--nis-primary);background:var(--chip-hover-bg)}
+.demo-nav .badge{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--chip-bg);color:var(--nis-primary)}
+
+/* ─── Theme Picker ─── */
+.theme-btn{position:relative;width:36px;height:36px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--secondary)}
+.theme-btn:hover{background:var(--chip-hover-bg);color:var(--nis-primary);border-color:var(--chip-border)}
+.theme-btn svg{width:18px;height:18px}
+.theme-picker{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg2);border:1px solid var(--glass-border);border-radius:14px;padding:8px;box-shadow:0 16px 48px rgba(0,0,0,.4);display:none;z-index:200;min-width:180px}
+.theme-picker.open{display:block}
+.theme-option{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--secondary);font-size:13px;font-weight:500;width:100%;text-align:left}
+.theme-option:hover{background:var(--glass);color:var(--fg)}
+.theme-option.active{background:var(--chip-hover-bg);color:var(--nis-primary)}
+.theme-swatch{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid var(--glass-border)}
+.theme-swatch-dark{background:linear-gradient(135deg,#09090B,#1a1a2e)}
+.theme-swatch-light{background:linear-gradient(135deg,#f5f5f7,#ffffff)}
+.theme-swatch-purple{background:linear-gradient(135deg,#0a0a12,#7c3aed)}
+.theme-swatch-ocean{background:linear-gradient(135deg,#0a0e17,#06b6d4)}
+.theme-swatch-amber{background:linear-gradient(135deg,#0f0b07,#f59e0b)}
+.theme-check{margin-left:auto;color:var(--nis-primary);display:none}
+.theme-option.active .theme-check{display:block}
+
+/* ─── Page Layout ─── */
+.page-main{flex:1;display:flex;flex-direction:column;padding-top:120px;padding-bottom:48px;align-items:center}
+.page-wrap{width:min(760px,92vw);text-align:left}
+.page-hero{text-align:center;margin-bottom:32px}
+.page-hero .nis-brand{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px;font-size:13px;color:var(--nis-primary);font-weight:600}
+.page-hero .nis-brand svg{width:18px;height:18px}
+.page-hero h1{font-family:var(--font-display);font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:10px}
+.page-hero h1 span{background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-hero p{color:var(--secondary);font-size:14px;max-width:560px;margin:0 auto;line-height:1.6}
+
+/* ─── Page Card ─── */
+.page-card{position:relative;background:var(--bg2);border:1px solid var(--glass-border);border-radius:20px;padding:32px 36px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.5)}
+.page-card h3{font-family:var(--font-display);font-size:20px;margin:0 0 4px;color:var(--fg)}
+.page-card .page-sub{color:var(--secondary);font-size:13px;margin:0 0 20px;line-height:1.6}
+
+/* ─── FAQ ─── */
+.faq-item{border:1px solid var(--glass-border);border-radius:10px;margin-bottom:10px;overflow:hidden;background:var(--glass)}
+.faq-q{width:100%;text-align:left;background:none;border:none;padding:14px 16px;font-size:14px;font-weight:600;color:var(--fg);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.faq-q::after{content:'+';font-size:18px;color:var(--nis-primary);transition:transform .2s;flex-shrink:0}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{display:none;padding:0 16px 14px;font-size:13px;color:var(--secondary);line-height:1.6}
+.faq-item.open .faq-a{display:block}
+
+/* ─── Buttons ─── */
+.page-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.btn-page{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;border:1px solid var(--glass-border);background:var(--glass);color:var(--secondary);cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center}
+.btn-page:hover{background:var(--chip-hover-bg);color:var(--fg)}
+.btn-page.primary{background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));border:none;color:#fff}
+.btn-page.primary:hover{filter:brightness(1.08)}
+
+/* ─── Footer ─── */
+.demo-footer{text-align:center;padding:20px 32px 32px;font-size:12px;color:var(--muted);transition:color .4s}
+.demo-footer a{color:var(--nis-primary);text-decoration:none}
+.demo-footer a:hover{text-decoration:underline}
+
+@media (max-width:768px){
+  .demo-header{padding:0 16px}
+  .demo-nav{gap:6px}
+  .demo-nav .badge{display:none}
+  .page-main{padding-top:104px}
+  .page-card{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+<div class="bg-layers" aria-hidden="true">
+  <div class="bg-noise"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+  <div class="bg-glow bg-glow-4"></div>
+</div>
+
+<div class="demo-page">
+  <header class="demo-header">
+    <div class="demo-header-inner">
+      <a href="/" class="demo-logo">
+        <img src="/static/nav-logo.png" alt="NIS Grenada" onerror="this.style.display='none'">
+        <span>NIS Grenada</span>
+      </a>
+      <nav class="demo-nav">
+        <span class="badge">Demo</span>
+        <a href="/static/faq.html" class="active">FAQ</a>
+        <a href="/static/contact.html">Contact Us</a>
+        <div style="position:relative">
+          <button class="theme-btn" onclick="toggleThemePicker()" title="Change theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </button>
+          <div class="theme-picker" id="themePicker">
+            <button class="theme-option active" data-theme-val="dark" onclick="setTheme('dark')">
+              <span class="theme-swatch theme-swatch-dark"></span> Dark
+              <span class="theme-check">✓</span>
+            </button>
+            <button class="theme-option" data-theme-val="light" onclick="setTheme('light')">
+              <span class="theme-swatch theme-swatch-light"></span> Light
+              <span class="theme-check">✓</span>
+            </button>
+            <button class="theme-option" data-theme-val="purple" onclick="setTheme('purple')">
+              <span class="theme-swatch theme-swatch-purple"></span> Purple
+              <span class="theme-check">✓</span>
+            </button>
+            <button class="theme-option" data-theme-val="ocean" onclick="setTheme('ocean')">
+              <span class="theme-swatch" style="background:linear-gradient(135deg,#0a0e17,#06b6d4)"></span> Ocean
+              <span class="theme-check">✓</span>
+            </button>
+            <button class="theme-option" data-theme-val="amber" onclick="setTheme('amber')">
+              <span class="theme-swatch" style="background:linear-gradient(135deg,#0f0b07,#f59e0b)"></span> Amber
+              <span class="theme-check">✓</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="page-wrap">
+      <section class="page-hero">
+        <div class="nis-brand">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+          Frequently Asked Questions
+        </div>
+        <h1>NIS Grenada <span>FAQ</span></h1>
+        <p>Quick answers about the National Insurance Scheme, updated for 2026. Need more detail? Ask Nissy in the chat.</p>
+      </section>
+
+      <div class="page-card">
+        <h3>Frequently Asked Questions</h3>
+        <p class="page-sub">Tap a question to reveal the answer.</p>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What is the NIS and what does it cover?</button>
+          <div class="faq-a">The National Insurance Scheme protects workers and families through 19 benefits — Age Pension, Survivors, Invalidity, Sickness, Maternity, Unemployment, Funeral Grant, and Employment Injury (Death, Disablement, Medical Expenses).</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How much are contributions in 2026?</button>
+          <div class="faq-a">Employees pay 6.25% and employers 7.25%, for a total of 13.5% of insurable earnings. Self-employed people pay 13.5%, and voluntary contributors 6.75%. The rate rises gradually to 16% by 2031. Contributions are paid on up to $5,200/month ($1,200/week).</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">When can I retire and get a pension?</button>
+          <div class="faq-a">The pensionable age is currently 63 (2026), increasing to 65 by 2028. You need at least 575 contribution weeks (about 11.5 years). The Age Pension is 27% of your best 5 years' average earnings, up to 60%, with a minimum of $58/month.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What if I get sick and can't work?</button>
+          <div class="faq-a">Sickness Benefit pays 65% of your average insurable earnings for up to 26 weeks (up to 52 weeks for long-time contributors). You must be registered at least 3 months and have at least 2 months' contributions before the sick leave.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What if I lose my job?</button>
+          <div class="faq-a">Unemployment Benefit pays 50% of your average weekly insurable earnings for up to 13 weeks. You must have been registered and contributing for at least 52 weeks, with contributions in the weeks before losing your job.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">What support is available after a death?</button>
+          <div class="faq-a">Survivors Benefit provides a monthly pension if the deceased had 150+ contributions, or a one-time grant if they had 50+. Minimums: widow(er)/parent $58/month, child/orphan $29/month. A Funeral Grant also helps cover funeral costs — claim within 6 months of the death.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Do self-employed workers pay NIS?</button>
+          <div class="faq-a">Yes. Self-employed people pay 13.5% of gross earnings and can qualify for every benefit. You may pay between $907 and $8,424 a year, and you must contribute in the current year to qualify for benefits the following year.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How do I check my contributions?</button>
+          <div class="faq-a">Register and sign in to the NIS web portal at my.nisgrenada.org, call (473) 440-6647, or visit the office on Melville St, St George's (Mon–Fri, 7:30am–4:30pm).</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">How do I claim a benefit?</button>
+          <div class="faq-a">Submit the relevant claim form to the NIS office. Watch the deadlines: sickness claims within 3 months of sick leave, funeral grants within 6 months of death. Nissy can help you find the right form and next steps.</div>
+        </div>
+
+        <div class="page-actions">
+          <a class="btn-page" href="/?q=How%20do%20I%20apply%20for%20pension%3F">Ask Nissy</a>
+          <a class="btn-page primary" href="/static/contact.html">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="demo-footer">
+    NIS Grenada since 2026 &middot; <a href="https://nisgrenada.org" target="_blank" rel="noopener">nisgrenada.org</a> &middot; AI can make mistakes
+  </footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+const THEME_KEY = 'nis_demo_theme';
+const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+document.querySelectorAll('.theme-option').forEach(function(el) {
+  el.classList.toggle('active', el.dataset.themeVal === savedTheme);
+});
+
+window.setTheme = function(name) {
+  document.documentElement.setAttribute('data-theme', name);
+  localStorage.setItem(THEME_KEY, name);
+  document.querySelectorAll('.theme-option').forEach(function(el) {
+    el.classList.toggle('active', el.dataset.themeVal === name);
+  });
+  closeThemePicker();
+};
+
+window.toggleThemePicker = function() {
+  document.getElementById('themePicker').classList.toggle('open');
+};
+
+window.closeThemePicker = function() {
+  document.getElementById('themePicker').classList.remove('open');
+};
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.theme-btn') && !e.target.closest('.theme-picker')) {
+    var picker = document.getElementById('themePicker');
+    if (picker) picker.classList.remove('open');
+  }
+});
+
+window.toggleFaq = function(btn) {
+  var item = btn.closest('.faq-item');
+  var wasOpen = item.classList.contains('open');
+  var all = item.parentElement.querySelectorAll('.faq-item.open');
+  all.forEach(function(i) { i.classList.remove('open'); });
+  if (!wasOpen) item.classList.add('open');
+};
+
+})();
+</script>
+</body>
+</html>

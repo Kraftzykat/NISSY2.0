@@ -54,5 +54,27 @@ Nissy is designed with a strict **Autonomy Ceiling**. It guides, informs, and qu
 
 ---
 
-## 📁 Project Structure
+📝 License
+This project was created for the ECCU / ECCB Generative AI & Python Summer Camp 2026.
+
+🙏 Acknowledgements
+ECCU / ECCB for organizing the camp and providing the opportunity
+
+National Insurance Board (NIS), Grenada for their partnership and domain expertise
+
+Google for the Gemini API and free tier access
+
+NVIDIA for the NIM API and model access
+
+ElevenLabs for the Text-to-Speech API
+
+📞 Contact
+NIS Grenada
+Melville St, St George's, Grenada
+Phone: (473) 440-6647
+Email: nisgrenada@nisgrenada.org
+Website: nisgrenada.org
+
+Built with ❤️ for the people of Grenada
+© 2026 NIS Grenada — All rights reserved
 

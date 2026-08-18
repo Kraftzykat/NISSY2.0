@@ -9,6 +9,9 @@ from datetime import datetime, timezone
 import httpx
 from flask import Flask, request, jsonify, send_from_directory, Response
 
+# --- Google Gemini SDK ---
+import google.generativeai as genai
+
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 logging.basicConfig(level=logging.INFO)
 
@@ -188,19 +191,46 @@ LANGUAGE_HINTS = {
 }
 
 # ==============================================================================
-# 🤖 NVIDIA AI
+# 🤖 AI CONFIGURATION - Gemini (Primary) + NVIDIA Llama/Nemotron (Fallback)
 # ==============================================================================
+
+# --- GEMINI CONFIGURATION (Primary) ---
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-lite")
+
+gemini_available = False
+if GEMINI_API_KEY:
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+        gemini_available = True
+        app.logger.info(f"✅ Gemini configured. Model: {GEMINI_MODEL}")
+    except Exception as e:
+        app.logger.warning(f"⚠️ Gemini config failed: {e}")
+else:
+    app.logger.warning("⚠️ GEMINI_API_KEY not set")
+
+# --- NVIDIA CONFIGURATION (Fallback - Llama 3.1 + Nemotron) ---
 NVIDIA_KEY = os.environ.get("NVIDIA_API_KEY", "")
 NVIDIA_API = "https://integrate.api.nvidia.com/v1/chat/completions"
-NVIDIA_MODEL = os.environ.get("NVIDIA_MODEL", "meta/llama-3.1-8b-instruct")
+
+# Your models - in order of preference
 NVIDIA_MODELS = [
-    NVIDIA_MODEL,
-    "meta/llama-3.2-3b-instruct",
-    "nvidia/nemotron-mini-4b-instruct",
+    "meta/llama-3.1-8b-instruct",        # Llama 3.1 8B - Primary fallback
+    "nvidia/nemotron-mini-4b-instruct",  # Nemotron Mini 4B - Secondary fallback
 ]
 
+# Optional: Override with environment variable
+NVIDIA_MODEL_OVERRIDE = os.environ.get("NVIDIA_MODEL", "")
+if NVIDIA_MODEL_OVERRIDE:
+    NVIDIA_MODELS.insert(0, NVIDIA_MODEL_OVERRIDE)
+
+# --- ELEVENLABS TTS ---
 ELEVEN_KEY = os.environ.get("ELEVENLABS_API_KEY", "")
 ELEVEN_VOICE = os.environ.get("ELEVEN_VOICE_ID", "hpp4J3VqNfWAUOO0d1Us")
+if ELEVEN_KEY:
+    app.logger.info("✅ ElevenLabs configured")
+else:
+    app.logger.warning("⚠️ ELEVENLABS_API_KEY not set")
 
 # ==============================================================================
 # 📝 TCRDEI PROMPT
@@ -251,17 +281,46 @@ FORMAT: Answer in at most 4 short bullet lines, each starting with '- ' and unde
 """
 
 # ==============================================================================
-# 🧠 CALL NVIDIA
+# 🧠 AI CALL FUNCTIONS
 # ==============================================================================
-def call_nvidia(prompt: str, user_msg: str, model: str = None) -> str:
-    model_to_use = model or NVIDIA_MODELS[0]
+
+def call_gemini(prompt: str, user_msg: str, history_text: str = "") -> str:
+    """Call Google Gemini API."""
+    if not gemini_available:
+        raise Exception("Gemini is not configured")
+
+    full_prompt = f"{prompt}\n\n{history_text}User: {user_msg}"
+    model = genai.GenerativeModel(GEMINI_MODEL)
+    response = model.generate_content(
+        full_prompt,
+        generation_config=genai.types.GenerationConfig(
+            temperature=0.3,
+            max_output_tokens=250,
+            top_p=0.8,
+        )
+    )
+    if not response.text:
+        raise Exception("Gemini returned empty response")
+    return response.text.strip()
+
+def call_nvidia(prompt: str, user_msg: str, model: str) -> str:
+    """Call NVIDIA NIM API with specific model."""
+    if not NVIDIA_KEY:
+        raise Exception("NVIDIA_API_KEY not set")
+
     with httpx.Client(timeout=15.0) as cx:
         r = cx.post(
             NVIDIA_API,
-            headers={"Content-Type": "application/json", "Authorization": f"Bearer {NVIDIA_KEY}"},
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {NVIDIA_KEY}"
+            },
             json={
-                "model": model_to_use,
-                "messages": [{"role": "system", "content": prompt}, {"role": "user", "content": user_msg}],
+                "model": model,
+                "messages": [
+                    {"role": "system", "content": prompt},
+                    {"role": "user", "content": user_msg}
+                ],
                 "temperature": 0.3,
                 "top_p": 0.8,
                 "max_tokens": 250,
@@ -271,7 +330,37 @@ def call_nvidia(prompt: str, user_msg: str, model: str = None) -> str:
         body = r.json()
         reply = (body.get("choices") or [{}])[0].get("message", {}).get("content", "").strip()
         return reply
-    raise Exception(f"AI HTTP {r.status_code}: {r.text[:200]}")
+    raise Exception(f"NVIDIA {model} HTTP {r.status_code}: {r.text[:200]}")
+
+def call_llm_with_fallback(prompt: str, user_msg: str, history_text: str = "") -> str:
+    """
+    Try Gemini first, then fallback to Llama 3.1, then Nemotron.
+    """
+    # 1. Try Gemini (Primary)
+    if gemini_available:
+        try:
+            result = call_gemini(prompt, user_msg, history_text)
+            if result:
+                app.logger.info("✅ Gemini response successful")
+                return result
+        except Exception as e:
+            app.logger.warning(f"⚠️ Gemini failed: {e}. Falling back...")
+
+    # 2. Try NVIDIA models (Llama 3.1 → Nemotron)
+    if NVIDIA_KEY:
+        for model in NVIDIA_MODELS:
+            try:
+                app.logger.info(f"🔄 Trying NVIDIA: {model}")
+                result = call_nvidia(prompt, user_msg, model)
+                if result:
+                    app.logger.info(f"✅ NVIDIA {model} successful")
+                    return result
+            except Exception as e:
+                app.logger.warning(f"⚠️ NVIDIA {model} failed: {e}")
+                continue
+
+    # 3. Final fallback - friendly message
+    return "I'm having trouble connecting right now. Please call (473) 440-6647 or visit Melville St, St George's for help."
 
 # ==============================================================================
 # 🌐 API ENDPOINTS
@@ -353,22 +442,19 @@ def chat():
         user_message=safe_message,
     )
 
-    def call_with_fallback():
-        last_err = None
-        for model in NVIDIA_MODELS:
-            try:
-                reply = call_nvidia(full_prompt, safe_message, model)
-                if reply:
-                    return reply
-            except Exception as e:
-                last_err = e
-                continue
-        raise Exception(last_err or "All models failed")
-
+    # Use safe_call with Gemini + NVIDIA fallback
     reply = safe_call(
-        call_with_fallback,
+        call_llm_with_fallback,
+        full_prompt,
+        safe_message,
+        history_text,
         fallback="I'm having trouble connecting right now. Please call (473) 440-6647 or visit Melville St, St George's for help.",
+        on_error=lambda e: app.logger.error(f"Chat failed: {e}"),
     )
+
+    # Clean up the reply
+    reply = re.sub(r'\*\*([^*]+)\*\*', r'\1', reply)  # Remove bold
+    reply = re.sub(r'#+\s*', '', reply)  # Remove headings
 
     add_to_history(session_id, "user", safe_message)
     add_to_history(session_id, "bot", reply)
@@ -378,6 +464,7 @@ def chat():
         "reply": reply,
         "session_id": session_id,
         "register": register,
+        "ai_used": "gemini" if gemini_available else "nvidia",
     })
 
 @app.route("/api/demo/tts", methods=["POST", "OPTIONS"])
@@ -391,6 +478,9 @@ def tts():
 
     text = data["text"][:1000].strip()
     text = redact_pii(text)
+
+    if not ELEVEN_KEY:
+        return jsonify({"ok": False, "error": "ElevenLabs API key not configured"}), 500
 
     try:
         url = f"https://api.elevenlabs.io/v1/text-to-speech/{ELEVEN_VOICE}?output_format=mp3_44100_128"

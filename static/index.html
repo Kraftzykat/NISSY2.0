@@ -746,6 +746,21 @@ function autoResize(el) {
 }
 window.autoResize = autoResize;
 
+// ─── Convert URLs in text to clickable links ───
+function linkify(text) {
+  // Match URLs (http, https, www, etc.)
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, function(url) {
+    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:var(--nis-primary);text-decoration:underline;">' + url + '</a>';
+  });
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
 let msgCount = 0;
 
 function addMsg(role, text) {
@@ -753,7 +768,14 @@ function addMsg(role, text) {
   const div = document.createElement('div');
   div.className = 'msg msg-' + role;
   const label = role === 'bot' ? 'Nissy' : 'You';
-  const formatted = role === 'bot' ? formatBotMessage(text) : escapeHtml(text);
+  
+  let formatted = text;
+  if (role === 'bot') {
+    formatted = formatBotMessage(text);
+  } else {
+    formatted = escapeHtml(text);
+  }
+  
   div.innerHTML = '<span class="msg-role">' + label + '</span><span>' + formatted + '</span>';
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
@@ -765,13 +787,18 @@ function addMsg(role, text) {
 }
 
 function formatBotMessage(text) {
+  // First, convert URLs to links (after escaping)
+  text = escapeHtml(text);
+  text = linkify(text);
+  
   const lines = text.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.length > 0; });
   if (lines.length === 0) return '';
-  if (lines.length === 1) return escapeHtml(lines[0]);
+  if (lines.length === 1) return text;
+  
   var html = '';
   var i = 0;
   if (lines[0].length > 0 && !lines[0].startsWith('-')) {
-    html += '<strong>' + escapeHtml(lines[0]) + '</strong><br>';
+    html += '<strong>' + lines[0] + '</strong><br>';
     i = 1;
   }
   var bullets = [];
@@ -780,17 +807,17 @@ function formatBotMessage(text) {
   for (; i < lines.length; i++) {
     var line = lines[i];
     if (line.startsWith('- ') || line.startsWith('• ') || line.startsWith('* ')) {
-      bullets.push('<li>' + escapeHtml(line.replace(/^[-•*]\s*/, '')) + '</li>');
+      bullets.push('<li>' + line.replace(/^[-•*]\s*/, '') + '</li>');
       inContext = false;
     } else if (line.match(/^(note|additional|extra|context|summary|remember|important|please|also|keep in mind|however|note that|key point)/i)) {
       inContext = true;
-      context.push(escapeHtml(line));
+      context.push(line);
     } else if (inContext) {
-      context[context.length - 1] += '<br>' + escapeHtml(line);
+      context[context.length - 1] += '<br>' + line;
     } else if (bullets.length > 0) {
-      bullets.push('<li>' + escapeHtml(line) + '</li>');
+      bullets.push('<li>' + line + '</li>');
     } else {
-      html += '<p>' + escapeHtml(line) + '</p>';
+      html += '<p>' + line + '</p>';
     }
   }
   if (bullets.length > 0) {
@@ -885,12 +912,6 @@ function clearChat() {
   if (chips) chips.style.display = '';
 }
 window.clearChat = clearChat;
-
-function escapeHtml(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
 
 // ─── TTS ───
 let ttsEnabled = false;

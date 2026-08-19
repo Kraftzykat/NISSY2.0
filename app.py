@@ -6,13 +6,21 @@ import logging
 import csv
 import uuid
 from datetime import datetime, timezone
+
 import httpx
 from flask import Flask, request, jsonify, send_from_directory, Response
 
 # --- Google Gemini SDK ---
-import google.generativeai as genai
+# 📌 CRITICAL FIX: `google-generativeai` (the old `genai.configure()` /
+# `genai.GenerativeModel()` API) is DEPRECATED. We now use the current,
+# unified `google-genai` SDK (pip package: google-genai, import path:
+# `from google import genai`). See requirements.txt for the matching
+# dependency change.
+from google import genai
+from google.genai import types as genai_types
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
+
 logging.basicConfig(level=logging.INFO)
 
 # ==============================================================================
@@ -137,8 +145,13 @@ def get_history_text(session_id: str) -> str:
     history = conversation_histories.get(session_id, [])
     if not history:
         return ""
+    # 📌 FIX: this used to hardcode history[-6:] (last 6 MESSAGES = only
+    # 3 exchanges), even though MAX_HISTORY_TURNS = 6 and add_to_history
+    # already stores up to MAX_HISTORY_TURNS * 2 = 12 messages. That mismatch
+    # meant the bot was actually forgetting half of what it was supposed to
+    # remember. Now we use everything that's actually stored.
     lines = []
-    for entry in history[-6:]:
+    for entry in history:
         speaker = "User" if entry["role"] == "user" else "Nissy"
         lines.append(f"{speaker}: {entry['text']}")
     return "\n".join(lines) + "\n\n"
@@ -193,15 +206,23 @@ LANGUAGE_HINTS = {
 # ==============================================================================
 # 🤖 AI CONFIGURATION - Gemini (Primary) + NVIDIA Llama/Nemotron (Fallback)
 # ==============================================================================
-
 # --- GEMINI CONFIGURATION (Primary) ---
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash-lite")
+# 📌 CRITICAL FIX: the old default here was "gemini-2.0-flash-lite", which
+# Google has SHUT DOWN. Every Gemini call was failing silently and quietly
+# falling back to NVIDIA — the app still "worked", so this was easy to miss.
+# New default is a current, free-tier-eligible model. You can still override
+# it without touching code by setting GEMINI_MODEL in Render's environment
+# variables (e.g. to try "gemini-2.5-flash" or "gemini-3.5-flash").
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash-lite")
 
+gemini_client = None
 gemini_available = False
 if GEMINI_API_KEY:
     try:
-        genai.configure(api_key=GEMINI_API_KEY)
+        # 📌 New SDK call shape: genai.Client(api_key=...) instead of the
+        # old genai.configure(api_key=...).
+        gemini_client = genai.Client(api_key=GEMINI_API_KEY)
         gemini_available = True
         app.logger.info(f"✅ Gemini configured. Model: {GEMINI_MODEL}")
     except Exception as e:
@@ -215,8 +236,8 @@ NVIDIA_API = "https://integrate.api.nvidia.com/v1/chat/completions"
 
 # Your models - in order of preference
 NVIDIA_MODELS = [
-    "meta/llama-3.1-8b-instruct",        # Llama 3.1 8B - Primary fallback
-    "nvidia/nemotron-mini-4b-instruct",  # Nemotron Mini 4B - Secondary fallback
+    "meta/llama-3.1-8b-instruct",       # Llama 3.1 8B - Primary fallback
+    "nvidia/nemotron-mini-4b-instruct", # Nemotron Mini 4B - Secondary fallback
 ]
 
 # Optional: Override with environment variable
@@ -227,6 +248,7 @@ if NVIDIA_MODEL_OVERRIDE:
 # --- ELEVENLABS TTS ---
 ELEVEN_KEY = os.environ.get("ELEVENLABS_API_KEY", "")
 ELEVEN_VOICE = os.environ.get("ELEVEN_VOICE_ID", "hpp4J3VqNfWAUOO0d1Us")
+
 if ELEVEN_KEY:
     app.logger.info("✅ ElevenLabs configured")
 else:
@@ -338,36 +360,36 @@ EXAMPLE OF GOOD RESPONSE:
 "Thank you for asking about the Survivors Benefit. I understand this is a difficult time, and I want to make sure you have all the information you need.
 
 - The Survivors Benefit provides a monthly pension to the family of a deceased NIS contributor. To qualify, the deceased must have had at least 150 contribution weeks or must have already been receiving their age pension.
-
 - If the deceased had 50 to 149 contribution weeks, the family may receive a one-time grant instead of a monthly pension. The grant is calculated as 5 times the average earnings for each 50 weeks of contributions.
-
 - The minimum monthly pension amounts are $58 for a widow(er) or parent, and $29 for each child or orphan. These amounts are adjusted periodically to help with the cost of living.
-
 - To claim this benefit, please visit the NIS office at Melville St, St George's with the death certificate, the deceased's NIS number, and proof of relationship. You have 6 months from the date of death to submit your claim.
 
 Would you like me to explain the Funeral Grant as well, or would you prefer to speak with someone at the office about your specific situation?"""
 
-
-
 # ==============================================================================
 # 🧠 AI CALL FUNCTIONS
 # ==============================================================================
-
 def call_gemini(prompt: str, user_msg: str, history_text: str = "") -> str:
-    """Call Google Gemini API."""
+    """Call Google Gemini API using the current google-genai SDK."""
     if not gemini_available:
         raise Exception("Gemini is not configured")
 
     full_prompt = f"{prompt}\n\n{history_text}User: {user_msg}"
-    model = genai.GenerativeModel(GEMINI_MODEL)
-    response = model.generate_content(
-        full_prompt,
-        generation_config=genai.types.GenerationConfig(
+
+    # 📌 New SDK call shape. Compare to the old, deprecated way:
+    #   OLD: model = genai.GenerativeModel(GEMINI_MODEL)
+    #        model.generate_content(full_prompt, generation_config=genai.types.GenerationConfig(...))
+    #   NEW: gemini_client.models.generate_content(model=..., contents=..., config=...)
+    response = gemini_client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=full_prompt,
+        config=genai_types.GenerateContentConfig(
             temperature=0.3,
             max_output_tokens=250,
             top_p=0.8,
-        )
+        ),
     )
+
     if not response.text:
         raise Exception("Gemini returned empty response")
     return response.text.strip()
@@ -395,15 +417,22 @@ def call_nvidia(prompt: str, user_msg: str, model: str) -> str:
                 "max_tokens": 250,
             },
         )
-    if r.status_code == 200:
-        body = r.json()
-        reply = (body.get("choices") or [{}])[0].get("message", {}).get("content", "").strip()
-        return reply
-    raise Exception(f"NVIDIA {model} HTTP {r.status_code}: {r.text[:200]}")
+        if r.status_code == 200:
+            body = r.json()
+            reply = (body.get("choices") or [{}])[0].get("message", {}).get("content", "").strip()
+            return reply
+        raise Exception(f"NVIDIA {model} HTTP {r.status_code}: {r.text[:200]}")
 
-def call_llm_with_fallback(prompt: str, user_msg: str, history_text: str = "") -> str:
+def call_llm_with_fallback(prompt: str, user_msg: str, history_text: str = "") -> dict:
     """
     Try Gemini first, then fallback to Llama 3.1, then Nemotron.
+
+    📌 FIX: this used to just return a string, which meant the /api/demo/chat
+    endpoint had no reliable way to know which AI ACTUALLY answered — it just
+    reported "gemini" any time the key was configured, even on turns where
+    Gemini silently failed and NVIDIA answered instead. Now we return which
+    engine really produced the reply, so the "ai_used" field in the response
+    (and your Render logs) tell the truth.
     """
     # 1. Try Gemini (Primary)
     if gemini_available:
@@ -411,7 +440,7 @@ def call_llm_with_fallback(prompt: str, user_msg: str, history_text: str = "") -
             result = call_gemini(prompt, user_msg, history_text)
             if result:
                 app.logger.info("✅ Gemini response successful")
-                return result
+                return {"text": result, "engine": "gemini"}
         except Exception as e:
             app.logger.warning(f"⚠️ Gemini failed: {e}. Falling back...")
 
@@ -423,18 +452,20 @@ def call_llm_with_fallback(prompt: str, user_msg: str, history_text: str = "") -
                 result = call_nvidia(prompt, user_msg, model)
                 if result:
                     app.logger.info(f"✅ NVIDIA {model} successful")
-                    return result
+                    return {"text": result, "engine": f"nvidia:{model}"}
             except Exception as e:
                 app.logger.warning(f"⚠️ NVIDIA {model} failed: {e}")
                 continue
 
     # 3. Final fallback - friendly message
-    return "I'm having trouble connecting right now. Please call (473) 440-6647 or visit Melville St, St George's for help."
+    return {
+        "text": "I'm having trouble connecting right now. Please call (473) 440-6647 or visit Melville St, St George's for help.",
+        "engine": "none",
+    }
 
 # ==============================================================================
 # 🌐 API ENDPOINTS
 # ==============================================================================
-
 @app.route("/")
 def index():
     """Serve the main chat page."""
@@ -459,7 +490,6 @@ def chat():
 
     raw_message = data["message"].strip()
     session_id = data.get("session_id", str(uuid.uuid4()))
-
     safe_message = redact_pii(raw_message)
 
     # Check distress
@@ -478,6 +508,7 @@ def chat():
         return jsonify({"ok": True, "reply": reply, "session_id": session_id})
 
     advance_journey(session_id)
+
     register = detect_register(safe_message)
     territory = detect_territory(safe_message)
     language = detect_language(safe_message)
@@ -512,18 +543,20 @@ def chat():
     )
 
     # Use safe_call with Gemini + NVIDIA fallback
-    reply = safe_call(
+    result = safe_call(
         call_llm_with_fallback,
         full_prompt,
         safe_message,
         history_text,
-        fallback="I'm having trouble connecting right now. Please call (473) 440-6647 or visit Melville St, St George's for help.",
+        fallback={"text": "I'm having trouble connecting right now. Please call (473) 440-6647 or visit Melville St, St George's for help.", "engine": "none"},
         on_error=lambda e: app.logger.error(f"Chat failed: {e}"),
     )
+    reply = result["text"]
+    engine_used = result["engine"]
 
     # Clean up the reply
     reply = re.sub(r'\*\*([^*]+)\*\*', r'\1', reply)  # Remove bold
-    reply = re.sub(r'#+\s*', '', reply)  # Remove headings
+    reply = re.sub(r'#+\s*', '', reply)                # Remove headings
 
     add_to_history(session_id, "user", safe_message)
     add_to_history(session_id, "bot", reply)
@@ -533,7 +566,7 @@ def chat():
         "reply": reply,
         "session_id": session_id,
         "register": register,
-        "ai_used": "gemini" if gemini_available else "nvidia",
+        "ai_used": engine_used,  # 📌 now reflects what ACTUALLY answered this turn
     })
 
 @app.route("/api/demo/tts", methods=["POST", "OPTIONS"])

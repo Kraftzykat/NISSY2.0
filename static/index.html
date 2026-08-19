@@ -4,14 +4,12 @@
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="/static/favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NIS Grenada — Nissy Digital Assistant</title>
+<title>NIS Grenada — Digital Assistant Demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   🎨 THEME VARIABLES
-   ============================================================ */
+/* ─── Theme Variables ─── */
 :root {
   --nis-primary: #00A859;
   --nis-primary-dark: #00854A;
@@ -55,24 +53,155 @@
   --font-display: 'Space Grotesk', var(--font-sans);
   --max-w: 1320px;
 }
+[data-theme="light"] {
+  --bg: #f5f5f7;
+  --bg2: #ffffff;
+  --fg: #1a1a2e;
+  --secondary: #4a4a6a;
+  --muted: #8888a0;
+  --glass: rgba(0,0,0,.03);
+  --glass-border: rgba(0,0,0,.06);
+  --header-bg: rgba(255,255,255,.9);
+  --chat-bg: rgba(255,255,255,.8);
+  --chat-border: rgba(0,168,89,.15);
+  --chat-header-bg: rgba(0,168,89,.04);
+  --chat-header-border: rgba(0,168,89,.1);
+  --msg-bot-bg: rgba(0,168,89,.06);
+  --msg-bot-border: rgba(0,168,89,.12);
+  --msg-bot-color: #065f46;
+  --msg-user-bg: rgba(255,209,0,.06);
+  --msg-user-border: rgba(255,209,0,.12);
+  --msg-user-color: #92400e;
+  --typing-bg: rgba(0,168,89,.04);
+  --typing-border: rgba(0,168,89,.08);
+  --input-bg: rgba(0,0,0,.03);
+  --chip-bg: rgba(0,168,89,.04);
+  --chip-border: rgba(0,168,89,.08);
+  --chip-hover-bg: rgba(0,168,89,.08);
+  --chip-hover-color: var(--nis-primary-dark);
+  --scrollbar-thumb: rgba(0,0,0,.12);
+  --gradient-1: var(--nis-primary-dark);
+  --gradient-2: var(--nis-accent-dark);
+  --glow-color: var(--nis-primary);
+  --rating-star-color: #f59e0b;
+}
+[data-theme="purple"] {
+  --bg: #0a0a12;
+  --bg2: #12101e;
+  --fg: #f0ecff;
+  --secondary: #b8b0d4;
+  --muted: #7a72a0;
+  --glass: rgba(120,80,255,.04);
+  --glass-border: rgba(120,80,255,.08);
+  --header-bg: rgba(10,10,18,.85);
+  --chat-bg: rgba(18,16,30,.7);
+  --chat-border: rgba(120,80,255,.15);
+  --chat-header-bg: rgba(120,80,255,.06);
+  --chat-header-border: rgba(120,80,255,.12);
+  --msg-bot-bg: rgba(120,80,255,.08);
+  --msg-bot-border: rgba(120,80,255,.12);
+  --msg-bot-color: #c4b5fd;
+  --msg-user-bg: rgba(255,100,200,.08);
+  --msg-user-border: rgba(255,100,200,.12);
+  --msg-user-color: #f9a8d4;
+  --typing-bg: rgba(120,80,255,.06);
+  --typing-border: rgba(120,80,255,.1);
+  --input-bg: rgba(0,0,0,.3);
+  --chip-bg: rgba(120,80,255,.06);
+  --chip-border: rgba(120,80,255,.1);
+  --chip-hover-bg: rgba(120,80,255,.12);
+  --chip-hover-color: #a78bfa;
+  --scrollbar-thumb: rgba(120,80,255,.15);
+  --gradient-1: #7c3aed;
+  --gradient-2: #ec4899;
+  --glow-color: #7c3aed;
+  --nis-primary: #7c3aed;
+  --nis-primary-dark: #6d28d9;
+  --nis-accent: #ec4899;
+  --nis-accent-dark: #db2777;
+  --rating-star-color: #fbbf24;
+}
+[data-theme="ocean"] {
+  --bg: #0a0e17;
+  --bg2: #0f172a;
+  --fg: #e0f2fe;
+  --secondary: #94a3b8;
+  --muted: #64748b;
+  --glass: rgba(6,182,212,.04);
+  --glass-border: rgba(6,182,212,.08);
+  --header-bg: rgba(10,14,23,.85);
+  --chat-bg: rgba(15,23,42,.7);
+  --chat-border: rgba(6,182,212,.15);
+  --chat-header-bg: rgba(6,182,212,.06);
+  --chat-header-border: rgba(6,182,212,.12);
+  --msg-bot-bg: rgba(6,182,212,.08);
+  --msg-bot-border: rgba(6,182,212,.12);
+  --msg-bot-color: #67e8f9;
+  --msg-user-bg: rgba(34,211,238,.08);
+  --msg-user-border: rgba(34,211,238,.12);
+  --msg-user-color: #7dd3fc;
+  --typing-bg: rgba(6,182,212,.06);
+  --typing-border: rgba(6,182,212,.1);
+  --input-bg: rgba(0,0,0,.3);
+  --chip-bg: rgba(6,182,212,.06);
+  --chip-border: rgba(6,182,212,.1);
+  --chip-hover-bg: rgba(6,182,212,.12);
+  --chip-hover-color: #22d3ee;
+  --scrollbar-thumb: rgba(6,182,212,.15);
+  --gradient-1: #06b6d4;
+  --gradient-2: #3b82f6;
+  --glow-color: #06b6d4;
+  --nis-primary: #06b6d4;
+  --nis-primary-dark: #0891b2;
+  --nis-accent: #3b82f6;
+  --nis-accent-dark: #2563eb;
+  --rating-star-color: #fcd34d;
+}
+[data-theme="amber"] {
+  --bg: #0f0b07;
+  --bg2: #1a120a;
+  --fg: #fef3c7;
+  --secondary: #d4a574;
+  --muted: #926d42;
+  --glass: rgba(245,158,11,.04);
+  --glass-border: rgba(245,158,11,.08);
+  --header-bg: rgba(15,11,7,.85);
+  --chat-bg: rgba(26,18,10,.7);
+  --chat-border: rgba(245,158,11,.15);
+  --chat-header-bg: rgba(245,158,11,.06);
+  --chat-header-border: rgba(245,158,11,.12);
+  --msg-bot-bg: rgba(245,158,11,.08);
+  --msg-bot-border: rgba(245,158,11,.12);
+  --msg-bot-color: #fde68a;
+  --msg-user-bg: rgba(239,68,68,.08);
+  --msg-user-border: rgba(239,68,68,.12);
+  --msg-user-color: #fca5a5;
+  --typing-bg: rgba(245,158,11,.06);
+  --typing-border: rgba(245,158,11,.1);
+  --input-bg: rgba(0,0,0,.3);
+  --chip-bg: rgba(245,158,11,.06);
+  --chip-border: rgba(245,158,11,.1);
+  --chip-hover-bg: rgba(245,158,11,.12);
+  --chip-hover-color: #fbbf24;
+  --scrollbar-thumb: rgba(245,158,11,.15);
+  --gradient-1: #f59e0b;
+  --gradient-2: #ef4444;
+  --glow-color: #f59e0b;
+  --nis-primary: #f59e0b;
+  --nis-primary-dark: #d97706;
+  --nis-accent: #ef4444;
+  --nis-accent-dark: #dc2626;
+  --rating-star-color: #fbbf24;
+}
 
-[data-theme="light"] { /* Same as before */ }
-[data-theme="purple"] { /* Same as before */ }
-[data-theme="ocean"] { /* Same as before */ }
-[data-theme="amber"] { /* Same as before */ }
-
-/* ============================================================
-   📐 RESET & BASE
-   ============================================================ */
+/* ─── Reset ─── */
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{font-family:var(--font-sans);background:var(--bg);color:var(--fg);min-height:100vh;overflow-x:hidden;transition:background .4s,color .4s}
 a{color:inherit;text-decoration:none}
 button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 
-/* ============================================================
-   🖼️ BACKGROUND LAYERS
-   ============================================================ */
+/* ─── Background Layers ─── */
 .bg-layers{position:fixed;inset:0;pointer-events:none;z-index:0}
 .bg-glow{position:absolute;border-radius:50%;filter:blur(350px);opacity:.08;pointer-events:none}
 .bg-glow-1{width:700px;height:700px;background:#3B82F6;top:-200px;left:10%;animation:glowFloat 20s ease-in-out infinite}
@@ -83,39 +212,32 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .bg-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");background-size:200px}
 .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:64px 64px;animation:gridScroll 80s linear infinite}
 @keyframes gridScroll{to{background-position:64px 64px}}
+#bg-particles{position:absolute;inset:0;width:100%;height:100%}
 
-/* ============================================================
-   📱 LAYOUT
-   ============================================================ */
+/* ─── Layout ─── */
 .demo-page{display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:1}
-
-/* ============================================================
-   🧭 HEADER
-   ============================================================ */
-.demo-header{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;background:var(--header-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--chat-header-border);display:flex;align-items:center;padding:0 24px;transition:background .4s,border-color .4s}
+.demo-header{position:fixed;top:0;left:0;right:0;z-index:100;height:80px;background:var(--header-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--chat-header-border);display:flex;align-items:center;padding:0 32px;transition:background .4s,border-color .4s}
 .demo-header-inner{max-width:var(--max-w);margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
-.demo-logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:18px;font-weight:700;text-decoration:none;color:var(--fg);transition:color .4s}
-.demo-logo a{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--fg)}
+.demo-logo{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:20px;font-weight:700;text-decoration:none;color:var(--fg);transition:color .4s}
+.demo-logo a{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--fg)}
 .demo-logo a:hover{opacity:0.8}
-.demo-logo img{width:32px;height:32px;border-radius:8px;object-fit:cover;box-shadow:0 4px 14px rgba(0,0,0,.3)}
-.demo-nav{display:flex;align-items:center;gap:8px}
-.demo-nav a{font-size:13px;font-weight:600;color:var(--secondary);text-decoration:none;padding:5px 8px;border-radius:8px;transition:color .2s,background .2s}
+.demo-logo img{width:36px;height:36px;border-radius:9px;object-fit:cover;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.demo-nav{display:flex;align-items:center;gap:12px}
+.demo-nav a{font-size:14px;font-weight:600;color:var(--secondary);text-decoration:none;padding:6px 10px;border-radius:8px;transition:color .2s,background .2s}
 .demo-nav a:hover{color:var(--nis-primary);background:var(--chip-hover-bg)}
 .demo-nav a.active{color:var(--nis-primary);background:var(--chip-hover-bg)}
-.demo-nav .badge{font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:6px;background:var(--chip-bg);color:var(--nis-primary)}
+.demo-nav .badge{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--chip-bg);color:var(--nis-primary)}
 
-/* ============================================================
-   🎨 THEME PICKER
-   ============================================================ */
-.theme-btn{position:relative;width:34px;height:34px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--secondary)}
+/* ─── Theme Picker ─── */
+.theme-btn{position:relative;width:36px;height:36px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--secondary)}
 .theme-btn:hover{background:var(--chip-hover-bg);color:var(--nis-primary);border-color:var(--chip-border)}
-.theme-btn svg{width:16px;height:16px}
-.theme-picker{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg2);border:1px solid var(--glass-border);border-radius:14px;padding:8px;box-shadow:0 16px 48px rgba(0,0,0,.4);display:none;z-index:200;min-width:160px}
+.theme-btn svg{width:18px;height:18px}
+.theme-picker{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg2);border:1px solid var(--glass-border);border-radius:14px;padding:8px;box-shadow:0 16px 48px rgba(0,0,0,.4);display:none;z-index:200;min-width:180px}
 .theme-picker.open{display:block}
-.theme-option{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:8px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--secondary);font-size:12px;font-weight:500;width:100%;text-align:left}
+.theme-option{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--secondary);font-size:13px;font-weight:500;width:100%;text-align:left}
 .theme-option:hover{background:var(--glass);color:var(--fg)}
 .theme-option.active{background:var(--chip-hover-bg);color:var(--nis-primary)}
-.theme-swatch{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:2px solid var(--glass-border)}
+.theme-swatch{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid var(--glass-border)}
 .theme-swatch-dark{background:linear-gradient(135deg,#09090B,#1a1a2e)}
 .theme-swatch-light{background:linear-gradient(135deg,#f5f5f7,#ffffff)}
 .theme-swatch-purple{background:linear-gradient(135deg,#0a0a12,#7c3aed)}
@@ -124,341 +246,192 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .theme-check{margin-left:auto;color:var(--nis-primary);display:none}
 .theme-option.active .theme-check{display:block}
 
-/* ============================================================
-   🌟 NEW: LANGUAGE INDICATOR
-   ============================================================ */
-.language-indicator {
-  font-size: 0.6rem;
-  color: var(--muted);
-  font-family: 'JetBrains Mono', monospace;
-  padding: 0.15rem 0.5rem;
-  border-radius: 12px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-.language-indicator:hover {
-  background: var(--nis-primary);
-  color: #fff;
-  border-color: var(--nis-primary);
-}
-
-/* ============================================================
-   🌟 NEW: JOURNEY PROGRESS BAR
-   ============================================================ */
-.journey-progress-container {
-  padding: 0.4rem 1.25rem;
-  background: var(--chat-header-bg);
-  border-bottom: 1px solid var(--chat-header-border);
-  flex-shrink: 0;
-}
-.journey-progress-label {
-  font-size: 0.6rem;
-  color: var(--muted);
-  font-family: 'JetBrains Mono', monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.15rem;
-  display: flex;
-  justify-content: space-between;
-}
-.journey-progress-track {
-  width: 100%;
-  height: 3px;
-  background: var(--glass-border);
-  border-radius: 2px;
-  overflow: hidden;
-  position: relative;
-}
-.journey-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2));
-  border-radius: 2px;
-  transition: width 0.5s ease;
-  width: 20%;
-}
-.journey-progress-steps {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.15rem;
-  font-size: 0.5rem;
-  color: var(--muted);
-}
-.journey-progress-steps span {
-  transition: color 0.3s ease;
-}
-.journey-progress-steps span.active {
-  color: var(--nis-primary);
-  font-weight: 600;
-}
-
-/* ============================================================
-   🌟 NEW: PERSONA SELECTOR
-   ============================================================ */
-.persona-selector {
-  padding: 0.4rem 1.25rem;
-  background: var(--chat-header-bg);
-  border-bottom: 1px solid var(--chat-header-border);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-}
-.persona-selector label {
-  font-size: 0.6rem;
-  color: var(--muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.persona-btn {
-  padding: 0.2rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.6rem;
-  font-weight: 500;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  color: var(--secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.persona-btn:hover {
-  background: var(--chip-hover-bg);
-  color: var(--fg);
-}
-.persona-btn.active {
-  background: var(--nis-primary);
-  color: #fff;
-  border-color: var(--nis-primary);
-}
-
-/* ============================================================
-   🚨 CRISIS BANNER
-   ============================================================ */
-.crisis-banner {
-  display: none;
-  padding: 0.5rem 1.25rem;
-  background: #dc2626;
-  color: #fff;
-  text-align: center;
-  font-size: 0.7rem;
-  font-weight: 600;
-  border-bottom: 2px solid var(--nis-flag-red);
-  animation: slideDown 0.5s ease;
-  flex-shrink: 0;
-}
-.crisis-banner.show {
-  display: block;
-}
-.crisis-banner a {
-  color: #fff;
-  text-decoration: underline;
-  font-weight: 700;
-}
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ============================================================
-   💬 MAIN CONTENT
-   ============================================================ */
-.demo-main{flex:1;display:flex;flex-direction:column;padding-top:72px;max-width:900px;margin:0 auto;width:100%;padding-left:24px;padding-right:24px}
-.demo-hero{text-align:center;padding:24px 0 16px}
-.demo-hero h1{font-family:var(--font-display);font-size:clamp(22px,3vw,32px);font-weight:800;margin-bottom:4px}
+/* ─── Main Content ─── */
+.demo-main{flex:1;display:flex;flex-direction:column;padding-top:80px;max-width:900px;margin:0 auto;width:100%;padding-left:32px;padding-right:32px}
+.demo-hero{text-align:center;padding:48px 0 32px}
+.demo-hero h1{font-family:var(--font-display);font-size:clamp(28px,4vw,42px);font-weight:800;margin-bottom:8px}
 .demo-hero h1 span{background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.demo-hero p{color:var(--secondary);font-size:13px;max-width:500px;margin:0 auto;line-height:1.5}
-.demo-hero .nis-brand{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:8px;font-size:12px;color:var(--nis-primary);font-weight:600}
-.demo-hero .nis-brand svg{width:16px;height:16px}
+.demo-hero p{color:var(--secondary);font-size:15px;max-width:500px;margin:0 auto;line-height:1.6}
+.demo-hero .nis-brand{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:12px;font-size:13px;color:var(--nis-primary);font-weight:600}
+.demo-hero .nis-brand svg{width:18px;height:18px}
 
-/* ============================================================
-   💬 CHAT CONTAINER
-   ============================================================ */
-.chat-container{flex:1;display:flex;flex-direction:column;background:var(--chat-bg);border:1px solid var(--chat-border);border-radius:var(--radius-lg);overflow:hidden;min-height:400px;max-height:550px;margin-bottom:16px;transition:background .4s,border-color .4s}
-.chat-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--chat-header-bg);border-bottom:1px solid var(--chat-header-border);transition:background .4s,border-color .4s}
-.chat-header-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;transition:background .4s;overflow:hidden;flex-shrink:0}
+/* ─── Chat Container ─── */
+.chat-container{flex:1;display:flex;flex-direction:column;background:var(--chat-bg);border:1px solid var(--chat-border);border-radius:var(--radius-lg);overflow:hidden;min-height:500px;max-height:600px;margin-bottom:24px;transition:background .4s,border-color .4s}
+.chat-header{display:flex;align-items:center;gap:10px;padding:14px 20px;background:var(--chat-header-bg);border-bottom:1px solid var(--chat-header-border);transition:background .4s,border-color .4s}
+.chat-header-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;transition:background .4s;overflow:hidden;flex-shrink:0}
 .chat-header-avatar img{width:100%;height:100%;object-fit:cover}
-.chat-header-avatar .avatar-fallback{display:none;font-size:16px;font-weight:700}
+.chat-header-avatar .avatar-fallback{display:none;font-size:18px;font-weight:700}
+.chat-header-avatar img:not([src]), .chat-header-avatar img[src=""], .chat-header-avatar img[src*="error"]{display:none}
+.chat-header-avatar img:not([src]) + .avatar-fallback,
+.chat-header-avatar img[src=""] + .avatar-fallback,
+.chat-header-avatar img[src*="error"] + .avatar-fallback{display:block}
 .chat-header-info{flex:1;min-width:0}
-.chat-header-name{font-size:13px;font-weight:700;color:var(--fg)}
-.chat-header-status{font-size:10px;color:var(--nis-primary);display:flex;align-items:center;gap:4px}
-.chat-header-status .dot{width:5px;height:5px;border-radius:50%;background:var(--nis-primary);animation:pulse 2s infinite}
+.chat-header-name{font-size:14px;font-weight:700;color:var(--fg)}
+.chat-header-status{font-size:11px;color:var(--nis-primary);display:flex;align-items:center;gap:4px}
+.chat-header-status .dot{width:6px;height:6px;border-radius:50%;background:var(--nis-primary);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.chat-header-actions{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
-.chat-header-actions button{padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600;background:var(--glass);color:var(--secondary);border:1px solid var(--glass-border);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:3px}
+.chat-header-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.chat-header-actions button{padding:6px 10px;border-radius:6px;font-size:12px;font-weight:600;background:var(--glass);color:var(--secondary);border:1px solid var(--glass-border);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:4px}
 .chat-header-actions button:hover{background:var(--chip-hover-bg);color:var(--fg)}
-.chat-header-actions button svg{width:14px;height:14px;flex-shrink:0}
+.chat-header-actions button svg{width:16px;height:16px;flex-shrink:0}
 .chat-header-actions .btn-clear{color:var(--nis-flag-red);border-color:rgba(206,17,38,.2)}
 .chat-header-actions .btn-clear:hover{background:rgba(206,17,38,.1)}
+.chat-header-actions .voice-status{font-size:10px;color:#ef4444;font-weight:600;display:none;align-items:center;gap:4px}
+.chat-header-actions .voice-status.active{display:flex}
+.chat-header-actions .voice-status .dot{width:6px;height:6px;border-radius:50%;background:#ef4444;animation:pulse 1s infinite}
+.chat-header-actions .voice-status.listening{color:#22c55e}
+.chat-header-actions .voice-status.listening .dot{background:#22c55e}
 
-/* ============================================================
-   💬 MESSAGES
-   ============================================================ */
-.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
-.chat-messages::-webkit-scrollbar{width:4px}
+/* ─── Messages ─── */
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+.chat-messages::-webkit-scrollbar{width:5px}
 .chat-messages::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:10px}
 .chat-messages::-webkit-scrollbar-track{background:transparent}
-.msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;word-break:break-word;animation:msgIn .25s ease-out;transition:background .4s,border-color .4s,color .4s}
+.msg{max-width:85%;padding:12px 16px;border-radius:14px;font-size:14px;line-height:1.6;word-break:break-word;animation:msgIn .25s ease-out;transition:background .4s,border-color .4s,color .4s}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .msg-bot{background:var(--msg-bot-bg);border:1px solid var(--msg-bot-border);color:var(--msg-bot-color);align-self:flex-start;border-bottom-left-radius:4px}
-.msg-bot .msg-role{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--nis-primary);margin-bottom:3px;display:block}
+.msg-bot .msg-role{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--nis-primary);margin-bottom:4px;display:block}
 .msg-user{background:var(--msg-user-bg);border:1px solid var(--msg-user-border);color:var(--msg-user-color);align-self:flex-end;border-bottom-right-radius:4px}
-.msg-user .msg-role{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--nis-accent);margin-bottom:3px;display:block;text-align:right}
-.msg-bot ul,.msg-user ul{margin:4px 0;padding-left:16px;display:flex;flex-direction:column;gap:2px}
-.msg-bot ul li,.msg-user ul li{font-size:12px;line-height:1.4;padding:2px 0}
-.msg-bot p,.msg-user p{margin:3px 0;line-height:1.5}
-.msg-context{margin-top:6px;padding:6px 10px;background:rgba(0,168,89,.04);border-left:3px solid var(--nis-primary);border-radius:0 6px 6px 0;font-size:11px;color:var(--secondary);line-height:1.4}
+.msg-user .msg-role{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--nis-accent);margin-bottom:4px;display:block;text-align:right}
+.msg-bot ul,.msg-user ul{margin:6px 0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.msg-bot ul li,.msg-user ul li{font-size:13px;line-height:1.5;padding:2px 0}
+.msg-bot p,.msg-user p{margin:4px 0;line-height:1.6}
+.msg-context{margin-top:8px;padding:8px 12px;background:rgba(0,168,89,.04);border-left:3px solid var(--nis-primary);border-radius:0 6px 6px 0;font-size:12px;color:var(--secondary);line-height:1.5}
 
-/* ============================================================
-   ⌨️ TYPING INDICATOR
-   ============================================================ */
-.typing{align-self:flex-start;display:flex;align-items:center;gap:5px;padding:10px 16px;background:var(--typing-bg);border:1px solid var(--typing-border);border-radius:14px;border-bottom-left-radius:4px}
-.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--nis-primary);animation:typingBounce 1.2s ease-in-out infinite}
+/* ─── Typing ─── */
+.typing{align-self:flex-start;display:flex;align-items:center;gap:6px;padding:14px 20px;background:var(--typing-bg);border:1px solid var(--typing-border);border-radius:14px;border-bottom-left-radius:4px}
+.typing-dot{width:8px;height:8px;border-radius:50%;background:var(--nis-primary);animation:typingBounce 1.2s ease-in-out infinite}
 .typing-dot:nth-child(2){animation-delay:.2s}
 .typing-dot:nth-child(3){animation-delay:.4s}
-@keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 
-/* ============================================================
-   ⌨️ INPUT
-   ============================================================ */
-.chat-input{display:flex;gap:0;border-top:1px solid var(--chat-border);padding:8px 12px;background:var(--input-bg);transition:background .4s,border-color .4s}
-.chat-input textarea{flex:1;background:transparent;border:none;padding:8px 10px;color:var(--fg);font-size:13px;font-family:var(--font-sans);outline:none;resize:none;line-height:1.4;max-height:100px;transition:color .4s}
+/* ─── Input ─── */
+.chat-input{display:flex;gap:0;border-top:1px solid var(--chat-border);padding:12px 16px;background:var(--input-bg);transition:background .4s,border-color .4s}
+.chat-input textarea{flex:1;background:transparent;border:none;padding:10px 12px;color:var(--fg);font-size:14px;font-family:var(--font-sans);outline:none;resize:none;line-height:1.5;max-height:120px;transition:color .4s}
 .chat-input textarea::placeholder{color:var(--muted)}
-.chat-input textarea::-webkit-scrollbar{width:3px}
+.chat-input textarea::-webkit-scrollbar{width:4px}
 .chat-input textarea::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:10px}
-.chat-input-actions{display:flex;align-items:flex-end;gap:6px;padding-bottom:2px}
-.chat-input-actions button{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));color:#fff;border:none;cursor:pointer;transition:all .2s}
+.chat-input-actions{display:flex;align-items:flex-end;gap:8px;padding-bottom:4px}
+.chat-input-actions button{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));color:#fff;border:none;cursor:pointer;transition:all .2s}
 .chat-input-actions button:hover{transform:scale(1.05);box-shadow:0 4px 16px var(--glow-color)}
 .chat-input-actions button:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
-.chat-input-actions button svg{width:18px;height:18px}
+.chat-input-actions button svg{width:20px;height:20px}
+#voiceNoteBtn{background:transparent;border:none;color:var(--secondary);cursor:pointer;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+#voiceNoteBtn svg{width:18px;height:18px}
+#voiceNoteBtn:hover{color:var(--fg);background:var(--chip-hover-bg)}
+#voiceNoteBtn.recording{color:#fff;background:#ef4444;animation:voicePulse 1.2s ease-in-out infinite}
+@keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
 
-/* ============================================================
-   🧩 SUGGESTION CHIPS
-   ============================================================ */
-.suggestion-chips{display:flex;gap:6px;padding:8px 16px;border-top:1px solid var(--glass-border);flex-wrap:wrap;align-items:center}
-.suggestion-chip{padding:4px 12px;border-radius:100px;font-size:11px;font-weight:500;background:var(--chip-bg);border:1px solid var(--chip-border);color:var(--secondary);cursor:pointer;transition:all .2s;white-space:nowrap}
+/* ─── Suggestion Chips ─── */
+.suggestion-chips{display:flex;gap:8px;padding:12px 20px;border-top:1px solid var(--glass-border);flex-wrap:wrap;align-items:center}
+.suggestion-chip{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;background:var(--chip-bg);border:1px solid var(--chip-border);color:var(--secondary);cursor:pointer;transition:all .2s;white-space:nowrap}
 .suggestion-chip:hover{background:var(--chip-hover-bg);color:var(--chip-hover-color);border-color:var(--chip-border)}
-.suggestion-chip.external{background:var(--nis-primary);color:#fff;border-color:var(--nis-primary);font-weight:600}
-.suggestion-chip.external:hover{background:var(--nis-primary-dark);border-color:var(--nis-primary-dark);color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,168,89,0.3)}
-.suggestion-chip.external .link-icon{display:inline-block;margin-left:3px;transition:transform 0.2s ease}
-.suggestion-chip.external:hover .link-icon{transform:translate(2px,-2px)}
 
-/* ============================================================
-   ⭐ RATING BAR (QUICK - NEW)
-   ============================================================ */
-.rating-bar{padding:0.4rem 1.25rem;border-top:1px solid var(--chat-border);background:var(--chat-header-bg);display:flex;align-items:center;justify-content:center;gap:0.5rem;flex-wrap:wrap}
-.rating-bar-label{font-size:0.7rem;color:var(--muted);font-weight:500}
-.rating-bar-btn{background:var(--glass);color:var(--fg);border:1px solid var(--glass-border);padding:0.3rem 0.8rem;border-radius:20px;font-size:0.7rem;font-weight:600;cursor:pointer;transition:0.2s;display:flex;align-items:center;gap:0.3rem}
+/* ─── External Link Chip (Forms & Downloads) ─── */
+.suggestion-chip.external {
+  background: var(--nis-primary);
+  color: #fff;
+  border-color: var(--nis-primary);
+  font-weight: 600;
+}
+.suggestion-chip.external:hover {
+  background: var(--nis-primary-dark);
+  border-color: var(--nis-primary-dark);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,168,89,0.3);
+}
+.suggestion-chip.external .external-icon {
+  display: inline-block;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+.suggestion-chip.external:hover .external-icon {
+  transform: translate(2px, -2px);
+}
+.suggestion-chip.external svg {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.suggestion-chip.external .link-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 4px;
+  transition: transform 0.2s ease;
+}
+.suggestion-chip.external:hover .link-icon {
+  transform: translate(2px, -2px);
+}
+
+/* ─── Rating Bar ─── */
+.rating-bar{padding:0.85rem 2.5rem;border-top:1px solid var(--chat-border);background:var(--chat-header-bg);display:flex;align-items:center;justify-content:center;gap:0.75rem;flex-wrap:wrap}
+.rating-bar-label{font-size:0.85rem;color:var(--muted);font-weight:500}
+.rating-bar-btn{background:var(--glass);color:var(--fg);border:1px solid var(--glass-border);padding:0.5rem 1.1rem;border-radius:20px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:0.2s;display:flex;align-items:center;gap:0.4rem}
 .rating-bar-btn:hover{background:var(--nis-primary);color:#fff;border-color:var(--nis-primary);transform:translateY(-1px)}
 .rating-bar-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
 
-/* ⭐ NEW: Quick Star Rating (visible on bar) */
-.quick-stars {
-  display: none;
-  gap: 0.15rem;
-  font-size: 1.1rem;
-}
-.quick-stars.show { display: flex; }
-.quick-star {
-  cursor: pointer;
-  filter: grayscale(100%) opacity(0.4);
-  transition: all 0.2s ease;
-  background: none;
-  border: none;
-  padding: 0;
-  line-height: 1;
-}
-.quick-star:hover { transform: scale(1.2); }
-.quick-star.active { filter: none; }
-.quick-star.selected { filter: none; transform: scale(1.1); }
-
-/* ============================================================
-   ⭐ RATING MODAL
-   ============================================================ */
+/* ─── Rating Modal ─── */
 .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
 .modal-overlay.open{display:flex}
-.rating-modal-content{background:var(--bg2);border:1px solid var(--glass-border);border-radius:calc(var(--radius-lg) * 1.5);width:90%;max-width:380px;height:auto;padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center;animation:slideUp 0.3s ease}
+.rating-modal-content{background:var(--bg2);border:1px solid var(--glass-border);border-radius:calc(var(--radius-lg) * 1.5);width:90%;max-width:420px;height:auto;padding:2rem;display:flex;flex-direction:column;align-items:center;gap:1.25rem;text-align:center;animation:slideUp 0.3s ease}
 @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.rating-modal-content h3{font-family:var(--font-display);font-size:1.2rem;color:var(--fg);margin:0}
-.rating-modal-content p{font-size:0.8rem;color:var(--muted);margin:0}
-.close-modal{align-self:flex-end;background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1;padding:0;margin-bottom:-0.5rem}
+.rating-modal-content h3{font-family:var(--font-display);font-size:1.4rem;color:var(--fg);margin:0}
+.rating-modal-content p{font-size:0.9rem;color:var(--muted);margin:0}
+.close-modal{align-self:flex-end;background:none;border:none;color:var(--muted);font-size:1.75rem;cursor:pointer;line-height:1;padding:0;margin-bottom:-1rem}
 .close-modal:hover{color:var(--nis-primary)}
-.star-row{display:flex;gap:0.3rem;font-size:2rem}
+.star-row{display:flex;gap:0.4rem;font-size:2.25rem}
 .star-btn{background:none;border:none;cursor:pointer;padding:0;line-height:1;filter:grayscale(100%) opacity(0.4);transition:transform 0.15s ease,filter 0.15s ease}
 .star-btn:hover{transform:scale(1.15)}
 .star-btn.selected{filter:none;transform:scale(1.1)}
-.rating-comment{width:100%;background:var(--bg);border:1px solid var(--glass-border);color:var(--fg);padding:0.5rem 0.8rem;border-radius:var(--radius-sm);font-size:0.8rem;font-family:'Inter',sans-serif;resize:none;outline:none}
+.rating-comment{width:100%;background:var(--bg);border:1px solid var(--glass-border);color:var(--fg);padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.9rem;font-family:'Inter',sans-serif;resize:none;outline:none}
 .rating-comment:focus{border-color:var(--nis-primary)}
-.rating-submit-btn{background:var(--nis-primary);color:#fff;border:none;padding:0.6rem 1.5rem;border-radius:var(--radius-sm);font-weight:600;font-size:0.85rem;cursor:pointer;transition:0.2s;width:100%}
+.rating-submit-btn{background:var(--nis-primary);color:#fff;border:none;padding:0.8rem 1.75rem;border-radius:var(--radius-sm);font-weight:600;font-size:0.95rem;cursor:pointer;transition:0.2s;width:100%}
 .rating-submit-btn:hover{background:var(--nis-primary-dark);transform:translateY(-1px)}
 .rating-submit-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-.rating-thanks{font-size:0.9rem;color:var(--fg);font-weight:600;display:none}
+.rating-thanks{font-size:0.95rem;color:var(--fg);font-weight:600;display:none}
 .rating-thanks.show{display:block}
 
-/* ============================================================
-   🐛 ERROR
-   ============================================================ */
-.error-msg{align-self:center;padding:6px 14px;border-radius:8px;font-size:11px;background:rgba(206,17,38,.1);border:1px solid rgba(206,17,38,.2);color:#fca5a5}
+/* ─── Error ─── */
+.error-msg{align-self:center;padding:8px 16px;border-radius:8px;font-size:12px;background:rgba(206,17,38,.1);border:1px solid rgba(206,17,38,.2);color:#fca5a5}
 
-/* ============================================================
-   📋 FOOTER
-   ============================================================ */
-.demo-footer{text-align:center;padding:16px 0 24px;font-size:11px;color:var(--muted);transition:color .4s}
+/* ─── Footer ─── */
+.demo-footer{text-align:center;padding:20px 0 32px;font-size:12px;color:var(--muted);transition:color .4s}
 .demo-footer a{color:var(--nis-primary);text-decoration:none}
 .demo-footer a:hover{text-decoration:underline}
 
-/* ============================================================
-   📱 RESPONSIVE
-   ============================================================ */
+/* ─── Responsive ─── */
 @media (max-width:768px){
-  .demo-header{padding:0 16px;height:64px}
-  .demo-main{padding-left:12px;padding-right:12px;padding-top:64px}
-  .chat-container{max-height:65vh;min-height:350px}
-  .chat-header-actions button{padding:3px 6px;font-size:9px}
-  .chat-header-actions button svg{width:12px;height:12px}
-  .rating-bar{padding:0.3rem 1rem}
-  .star-row{font-size:1.6rem}
-  .rating-modal-content{padding:1.25rem}
-  .suggestion-chips{gap:4px;padding:6px 12px}
-  .suggestion-chip{font-size:10px;padding:3px 10px}
-  .journey-progress-container{padding:0.3rem 1rem}
-  .persona-selector{padding:0.3rem 1rem}
-  .persona-btn{font-size:0.55rem;padding:0.15rem 0.5rem}
+  .demo-header{padding:0 16px}
+  .demo-main{padding-left:16px;padding-right:16px}
+  .chat-container{max-height:70vh;min-height:400px}
+  .chat-header-actions button{padding:4px 8px;font-size:10px}
+  .chat-header-actions button svg{width:14px;height:14px}
+  .rating-bar{padding:0.65rem 1.5rem}
+  .star-row{font-size:1.9rem}
+  .rating-modal-content{padding:1.5rem}
+  .suggestion-chips{gap:6px}
+  .suggestion-chip{font-size:11px;padding:4px 10px}
 }
 @media (max-width:480px){
   .demo-nav .badge{display:none}
   .chat-header-actions .btn-clear{display:none}
-  .demo-hero h1{font-size:20px}
-  .demo-hero p{font-size:12px}
-  .msg{font-size:12px;max-width:92%}
-  .chat-header-name{font-size:12px}
-  .quick-stars{font-size:0.9rem}
 }
 </style>
 </head>
 <body>
-
-<!-- ============================================================
-   🖼️ BACKGROUND
-   ============================================================ -->
 <div class="bg-layers" aria-hidden="true">
   <div class="bg-noise"></div>
   <div class="bg-grid"></div>
+  <canvas id="bg-particles"></canvas>
   <div class="bg-glow bg-glow-1"></div>
   <div class="bg-glow bg-glow-2"></div>
   <div class="bg-glow bg-glow-3"></div>
   <div class="bg-glow bg-glow-4"></div>
 </div>
 
-<!-- ============================================================
-   📱 PAGE
-   ============================================================ -->
 <div class="demo-page">
-  
-  <!-- HEADER -->
+  <!-- Header -->
   <header class="demo-header">
     <div class="demo-header-inner">
       <div class="demo-logo">
@@ -470,27 +443,31 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
       <nav class="demo-nav">
         <span class="badge">Demo</span>
         <a href="/static/faq.html" class="nav-link">FAQ</a>
-        <a href="/static/contact.html" class="nav-link">Contact</a>
-        <span class="language-indicator" id="languageIndicator" onclick="cycleLanguage()">🌐 EN</span>
+        <a href="/static/contact.html" class="nav-link">Contact Us</a>
         <div style="position:relative">
           <button class="theme-btn" id="themeBtn" onclick="toggleThemePicker()" title="Change theme" aria-label="Change theme">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
           </button>
           <div class="theme-picker" id="themePicker">
             <button class="theme-option active" data-theme-val="dark" onclick="setTheme('dark')">
-              <span class="theme-swatch theme-swatch-dark"></span> Dark <span class="theme-check">✓</span>
+              <span class="theme-swatch theme-swatch-dark"></span> Dark
+              <span class="theme-check">✓</span>
             </button>
             <button class="theme-option" data-theme-val="light" onclick="setTheme('light')">
-              <span class="theme-swatch theme-swatch-light"></span> Light <span class="theme-check">✓</span>
+              <span class="theme-swatch theme-swatch-light"></span> Light
+              <span class="theme-check">✓</span>
             </button>
             <button class="theme-option" data-theme-val="purple" onclick="setTheme('purple')">
-              <span class="theme-swatch theme-swatch-purple"></span> Purple <span class="theme-check">✓</span>
+              <span class="theme-swatch theme-swatch-purple"></span> Purple
+              <span class="theme-check">✓</span>
             </button>
             <button class="theme-option" data-theme-val="ocean" onclick="setTheme('ocean')">
-              <span class="theme-swatch" style="background:linear-gradient(135deg,#0a0e17,#06b6d4)"></span> Ocean <span class="theme-check">✓</span>
+              <span class="theme-swatch" style="background:linear-gradient(135deg,#0a0e17,#06b6d4)"></span> Ocean
+              <span class="theme-check">✓</span>
             </button>
             <button class="theme-option" data-theme-val="amber" onclick="setTheme('amber')">
-              <span class="theme-swatch" style="background:linear-gradient(135deg,#0f0b07,#f59e0b)"></span> Amber <span class="theme-check">✓</span>
+              <span class="theme-swatch" style="background:linear-gradient(135deg,#0f0b07,#f59e0b)"></span> Amber
+              <span class="theme-check">✓</span>
             </button>
           </div>
         </div>
@@ -498,22 +475,20 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
     </div>
   </header>
 
-  <!-- MAIN -->
+  <!-- Main -->
   <main class="demo-main">
-    
-    <!-- HERO -->
+    <!-- Hero -->
     <section class="demo-hero">
       <div class="nis-brand">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
         National Insurance Scheme — Grenada
       </div>
       <h1><span>Nissy</span> Digital Assistant</h1>
-      <p>Ask about pensions, contributions, benefits, claims, and more.</p>
+      <p>Ask anything about NIS Grenada — pensions, contributions, benefits, claims, and more.</p>
     </section>
 
-    <!-- CHAT -->
+    <!-- Chat -->
     <div class="chat-container">
-      <!-- Chat Header -->
       <div class="chat-header">
         <div class="chat-header-avatar">
           <img src="/static/chat-pfp.png" alt="Nissy" onerror="this.style.display='none'">
@@ -524,6 +499,7 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
           <div class="chat-header-status"><span class="dot"></span> Online</div>
         </div>
         <div class="chat-header-actions">
+          <div class="voice-status" id="voiceStatus"><span class="dot"></span> Voice</div>
           <button onclick="toggleTTS()" id="ttsBtn" title="Text-to-Speech" aria-label="Toggle TTS">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
           </button>
@@ -531,41 +507,6 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
         </div>
       </div>
 
-      <!-- 🌟 NEW: JOURNEY PROGRESS -->
-      <div class="journey-progress-container">
-        <div class="journey-progress-label">
-          <span>Progress</span>
-          <span id="journeyStepName">👋 Welcome</span>
-        </div>
-        <div class="journey-progress-track">
-          <div class="journey-progress-fill" id="journeyProgressFill" style="width: 20%;"></div>
-        </div>
-        <div class="journey-progress-steps">
-          <span class="active" data-step="0">👋</span>
-          <span data-step="1">🔍</span>
-          <span data-step="2">📚</span>
-          <span data-step="3">🎯</span>
-          <span data-step="4">✅</span>
-        </div>
-      </div>
-
-      <!-- 🌟 NEW: PERSONA SELECTOR -->
-      <div class="persona-selector">
-        <label>I am a:</label>
-        <button class="persona-btn active" data-persona="individual" onclick="setPersona('individual')">👤 Individual</button>
-        <button class="persona-btn" data-persona="employer" onclick="setPersona('employer')">🏢 Employer</button>
-        <button class="persona-btn" data-persona="job_seeker" onclick="setPersona('job_seeker')">💼 Job Seeker</button>
-        <button class="persona-btn" data-persona="retiree" onclick="setPersona('retiree')">👴 Retiree</button>
-        <button class="persona-btn" data-persona="bereaved" onclick="setPersona('bereaved')">🕊️ Bereaved</button>
-      </div>
-
-      <!-- 🚨 CRISIS BANNER -->
-      <div class="crisis-banner" id="crisisBanner">
-        🆘 <strong>You matter.</strong> If you're in crisis, call:
-        <a href="tel:4561353">456-1353</a> (Crisis Centre) or <a href="tel:911">911</a>
-      </div>
-
-      <!-- MESSAGES -->
       <div class="chat-messages" id="chatMessages">
         <div class="msg msg-bot">
           <span class="msg-role">Nissy</span>
@@ -573,7 +514,6 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
         </div>
       </div>
 
-      <!-- INPUT -->
       <form class="chat-input" id="chatForm" onsubmit="return sendMessage(event)">
         <textarea id="chatInput" rows="1" placeholder="Ask about NIS Grenada..." oninput="autoResize(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage(event)}"></textarea>
         <div class="chat-input-actions">
@@ -586,32 +526,36 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
         </div>
       </form>
 
-      <!-- SUGGESTION CHIPS -->
+      <!-- ─── SUGGESTION CHIPS WITH FORMS BUTTON ─── -->
       <div class="suggestion-chips" id="suggestionChips">
         <span class="suggestion-chip" onclick="quickQuestion(this)">How do I apply for pension?</span>
         <span class="suggestion-chip" onclick="quickQuestion(this)">What are NIS contributions?</span>
         <span class="suggestion-chip" onclick="quickQuestion(this)">Survivor benefits</span>
         <span class="suggestion-chip" onclick="quickQuestion(this)">How to check my contributions?</span>
         <span class="suggestion-chip" onclick="quickQuestion(this)">Maternity benefit</span>
+        <!-- ⭐ FORMS & DOWNLOADS BUTTON - External Link -->
         <span class="suggestion-chip external" onclick="openForms()">
-          📋 Forms &amp; Downloads
-          <span class="link-icon">↗</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          Forms &amp; Downloads
+          <svg class="link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
         </span>
       </div>
 
-      <!-- ⭐ RATING BAR (with Quick Stars - NEW) -->
+      <!-- ⭐ RATING BAR -->
       <div class="rating-bar">
         <span class="rating-bar-label">💬 Was this helpful?</span>
         <button class="rating-bar-btn" id="ratingBarBtn" onclick="openRatingModal()">⭐ Rate Nissy</button>
-        <span id="ratingThanksMsg" style="display:none; font-size:0.7rem; color:var(--nis-primary); font-weight:600;">🙏 Thanks!</span>
-        <!-- 🌟 NEW: Quick Stars (appear after rating) -->
-        <div class="quick-stars" id="quickStars">
-          <button class="quick-star" data-value="1" onclick="quickRate(1)">⭐</button>
-          <button class="quick-star" data-value="2" onclick="quickRate(2)">⭐</button>
-          <button class="quick-star" data-value="3" onclick="quickRate(3)">⭐</button>
-          <button class="quick-star" data-value="4" onclick="quickRate(4)">⭐</button>
-          <button class="quick-star" data-value="5" onclick="quickRate(5)">⭐</button>
-        </div>
+        <span id="ratingThanksMsg" style="display:none; font-size:0.85rem; color:var(--nis-primary); font-weight:600;">🙏 Thanks for your feedback!</span>
       </div>
     </div>
 
@@ -620,7 +564,8 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
       <div class="rating-modal-content">
         <button class="close-modal" onclick="closeRatingModal()">×</button>
         <h3>⭐ Rate your experience</h3>
-        <p>How helpful was Nissy today?</p>
+        <p>How helpful was Nissy today? Tap a star from 1 (not helpful) to 5 (very helpful).</p>
+
         <div class="star-row" id="starRow">
           <button class="star-btn" onclick="selectStar(1)" data-value="1">⭐</button>
           <button class="star-btn" onclick="selectStar(2)" data-value="2">⭐</button>
@@ -628,114 +573,93 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
           <button class="star-btn" onclick="selectStar(4)" data-value="4">⭐</button>
           <button class="star-btn" onclick="selectStar(5)" data-value="5">⭐</button>
         </div>
-        <textarea class="rating-comment" id="ratingComment" rows="3" placeholder="Optional: tell us more"></textarea>
+
+        <textarea class="rating-comment" id="ratingComment" rows="3" placeholder="Optional: tell us more (optional)"></textarea>
+
         <button class="rating-submit-btn" id="ratingSubmitBtn" onclick="submitRating()" disabled>Submit Rating</button>
+
         <div class="rating-thanks" id="ratingThanks">🙏 Thanks for your feedback!</div>
       </div>
     </div>
 
-    <!-- FOOTER -->
     <footer class="demo-footer">
-      ECCU SLU hub for NIS Grenada &middot; <a href="https://nisgrenada.org" target="_blank" rel="noopener">nisgrenada.org</a> &middot; AI can make mistakes
+      Created by ECCU SLU hub for NIs Grenada &middot; <a href="https://nisgrenada.org" target="_blank" rel="noopener">nisgrenada.org</a> &middot; AI can make mistakes, please verify with a Human Agent
     </footer>
   </main>
 </div>
 
-<!-- ============================================================
-   📜 JAVASCRIPT
-   ============================================================ -->
 <script>
 (function(){
 'use strict';
 
-// ============================================================
-// 📦 CONFIG
-// ============================================================
+// ─── Session ID ───
 const sessionId = crypto.randomUUID ? crypto.randomUUID() : 'session-' + Date.now();
 
-// ============================================================
-// 🌐 LANGUAGE PREFERENCE
-// ============================================================
-let currentLanguage = 'en';
-const LANGUAGES = ['en', 'es', 'fr', 'kw'];
-const LANGUAGE_LABELS = {
-  'en': '🌐 EN',
-  'es': '🌐 ES',
-  'fr': '🌐 FR',
-  'kw': '🌐 KW'
-};
-
-function cycleLanguage() {
-  const currentIndex = LANGUAGES.indexOf(currentLanguage);
-  const nextIndex = (currentIndex + 1) % LANGUAGES.length;
-  currentLanguage = LANGUAGES[nextIndex];
-  document.getElementById('languageIndicator').textContent = LANGUAGE_LABELS[currentLanguage];
-  localStorage.setItem('nissy-language', currentLanguage);
-}
-
-// Load saved language
-const savedLang = localStorage.getItem('nissy-language');
-if (savedLang && LANGUAGES.includes(savedLang)) {
-  currentLanguage = savedLang;
-  document.getElementById('languageIndicator').textContent = LANGUAGE_LABELS[currentLanguage];
-}
-
-// ============================================================
-// 👤 PERSONA SELECTION
-// ============================================================
-let currentPersona = 'individual';
-
-function setPersona(persona) {
-  currentPersona = persona;
-  document.querySelectorAll('.persona-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.persona === persona);
-  });
-  localStorage.setItem('nissy-persona', persona);
-}
-
-// Load saved persona
-const savedPersona = localStorage.getItem('nissy-persona');
-if (savedPersona) {
-  setPersona(savedPersona);
-}
-
-// ============================================================
-// 🧭 JOURNEY PROGRESS
-// ============================================================
-let currentJourneyStep = 0;
-const JOURNEY_STEPS = ['👋 Welcome', '🔍 Understanding', '📚 Info', '🎯 Action', '✅ Done'];
-
-function updateJourneyProgress(step) {
-  currentJourneyStep = Math.min(step, JOURNEY_STEPS.length - 1);
-  const fill = document.getElementById('journeyProgressFill');
-  const label = document.getElementById('journeyStepName');
-  const steps = document.querySelectorAll('.journey-progress-steps span');
-  
-  const percent = ((currentJourneyStep + 1) / JOURNEY_STEPS.length) * 100;
-  fill.style.width = Math.min(percent, 100) + '%';
-  label.textContent = JOURNEY_STEPS[currentJourneyStep];
-  
-  steps.forEach((el, index) => {
-    el.classList.toggle('active', index <= currentJourneyStep);
-  });
-}
-
-function advanceJourney() {
-  if (currentJourneyStep < JOURNEY_STEPS.length - 1) {
-    updateJourneyProgress(currentJourneyStep + 1);
-  }
-}
-
-// ============================================================
-// ⭐ RATING SYSTEM
-// ============================================================
+// ─── Rating State ───
 let selectedStars = 0;
 let lastBotResponse = '';
 let ratingSubmitted = false;
 
-function openRatingModal() {
+// ─── DOM Helpers ───
+function $(s){return document.querySelector(s)}
+function $$(s){return document.querySelectorAll(s)}
+
+// ─── Keep API Warm ───
+setInterval(function() {
+  fetch('/api/demo/chat', { 
+    method: 'POST', 
+    headers: { 'Content-Type': 'application/json' }, 
+    body: JSON.stringify({ message: 'ping', session_id: sessionId }) 
+  }).catch(function(){});
+}, 45000);
+
+const THEME_KEY = 'nis_demo_theme';
+
+// ─── Theme System ───
+const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+document.querySelectorAll('.theme-option').forEach(el => {
+  el.classList.toggle('active', el.dataset.themeVal === savedTheme);
+});
+
+window.setTheme = function(name) {
+  document.documentElement.setAttribute('data-theme', name);
+  localStorage.setItem(THEME_KEY, name);
+  document.querySelectorAll('.theme-option').forEach(el => {
+    el.classList.toggle('active', el.dataset.themeVal === name);
+  });
+  closeThemePicker();
+  restartParticles(name);
+};
+
+window.toggleThemePicker = function() {
+  const picker = $('#themePicker');
+  picker.classList.toggle('open');
+};
+
+window.closeThemePicker = function() {
+  const picker = $('#themePicker');
+  picker.classList.remove('open');
+};
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.theme-btn') && !e.target.closest('.theme-picker')) {
+    const picker = $('#themePicker');
+    if (picker) picker.classList.remove('open');
+  }
+});
+
+// ─── FORMS & DOWNLOADS BUTTON ───
+window.openForms = function() {
+  // Opens the NIS Grenada downloads page in a new tab
+  window.open('https://nisgrenada.org/downloads-2/', '_blank');
+};
+
+// ─── Rating Modal Functions ───
+window.openRatingModal = function() {
   if (ratingSubmitted) {
-    document.getElementById('ratingThanksMsg').style.display = 'inline';
+    const thanksMsg = document.getElementById('ratingThanksMsg');
+    if (thanksMsg) thanksMsg.style.display = 'inline';
     return;
   }
   document.getElementById('ratingModal').classList.add('open');
@@ -744,33 +668,37 @@ function openRatingModal() {
   document.getElementById('ratingSubmitBtn').disabled = true;
   document.getElementById('ratingComment').value = '';
   document.getElementById('ratingThanks').classList.remove('show');
-}
+};
 
-function closeRatingModal() {
+window.closeRatingModal = function() {
   document.getElementById('ratingModal').classList.remove('open');
-}
+};
 
-function selectStar(value) {
+window.selectStar = function(value) {
   selectedStars = value;
   const stars = document.querySelectorAll('#starRow .star-btn');
   stars.forEach((starBtn) => {
     const starValue = parseInt(starBtn.getAttribute('data-value'));
-    starBtn.classList.toggle('selected', starValue <= value);
+    if (starValue <= value) {
+      starBtn.classList.add('selected');
+    } else {
+      starBtn.classList.remove('selected');
+    }
   });
   document.getElementById('ratingSubmitBtn').disabled = false;
-}
+};
 
-async function submitRating() {
+window.submitRating = async function() {
   if (selectedStars === 0 || ratingSubmitted) return;
-  
+
   const submitBtn = document.getElementById('ratingSubmitBtn');
   submitBtn.disabled = true;
   submitBtn.textContent = 'Sending...';
-  
+
   const comment = document.getElementById('ratingComment').value.trim();
-  
+
   try {
-    await fetch('/api/rate', {
+    const response = await fetch('/api/rate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -780,107 +708,52 @@ async function submitRating() {
         response_text: lastBotResponse || 'General feedback',
       }),
     });
-    
-    ratingSubmitted = true;
-    document.getElementById('ratingSubmitBtn').style.display = 'none';
-    document.getElementById('ratingThanks').classList.add('show');
-    document.getElementById('ratingThanksMsg').style.display = 'inline';
-    document.getElementById('ratingBarBtn').textContent = '✅ Rated!';
-    document.getElementById('ratingBarBtn').disabled = true;
-    
-    // Show quick stars
-    document.getElementById('quickStars').classList.add('show');
-    document.querySelectorAll('.quick-star').forEach((star, index) => {
-      star.classList.toggle('selected', index < selectedStars);
-    });
-    
-    setTimeout(() => {
-      closeRatingModal();
-      document.getElementById('ratingSubmitBtn').style.display = 'block';
-      document.getElementById('ratingSubmitBtn').textContent = 'Submit Rating';
-      document.getElementById('ratingSubmitBtn').disabled = true;
-      document.getElementById('ratingThanks').classList.remove('show');
-      selectedStars = 0;
-      document.querySelectorAll('#starRow .star-btn').forEach(b => b.classList.remove('selected'));
-      document.getElementById('ratingComment').value = '';
-    }, 2000);
+
+    const data = await response.json();
+    if (data.ok) {
+      ratingSubmitted = true;
+      document.getElementById('ratingSubmitBtn').style.display = 'none';
+      document.getElementById('ratingThanks').classList.add('show');
+      
+      const barBtn = document.getElementById('ratingBarBtn');
+      if (barBtn) {
+        barBtn.textContent = '✅ Rated!';
+        barBtn.disabled = true;
+      }
+      
+      const thanksMsg = document.getElementById('ratingThanksMsg');
+      if (thanksMsg) thanksMsg.style.display = 'inline';
+
+      setTimeout(() => {
+        closeRatingModal();
+      }, 2000);
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Rating';
+      alert('Sorry, we couldn\'t save your rating. Please try again.');
+    }
   } catch (err) {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Rating';
     alert('Network error. Please try again.');
   }
-}
+};
 
-// 🌟 NEW: Quick rating (1-click)
-async function quickRate(value) {
-  if (ratingSubmitted) return;
-  
-  selectedStars = value;
-  document.querySelectorAll('.quick-star').forEach((star, index) => {
-    star.classList.toggle('selected', index < value);
-  });
-  
-  try {
-    await fetch('/api/rate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        session_id: sessionId,
-        rating: value,
-        comment: 'Quick rating',
-        response_text: lastBotResponse || 'General feedback',
-      }),
-    });
-    
-    ratingSubmitted = true;
-    document.getElementById('ratingThanksMsg').style.display = 'inline';
-    document.getElementById('ratingBarBtn').textContent = '✅ Rated!';
-    document.getElementById('ratingBarBtn').disabled = true;
-  } catch (err) {
-    // Silent fail
-  }
-}
-
-// ============================================================
-// 🚨 CRISIS DETECTION
-// ============================================================
-const CRISIS_TRIGGERS = [
-  'hurt myself', 'end it', 'suicide', 'kill myself', 'kms',
-  'depressed', 'anxiety', 'panic', 'can\'t cope', 'overwhelmed'
-];
-
-function checkForCrisis(text) {
-  const lower = text.toLowerCase();
-  return CRISIS_TRIGGERS.some(trigger => lower.includes(trigger));
-}
-
-function showCrisisBanner() {
-  document.getElementById('crisisBanner').classList.add('show');
-  setTimeout(() => {
-    document.getElementById('crisisBanner').classList.remove('show');
-  }, 30000);
-}
-
-// ============================================================
-// 🧠 SENTIMENT ANALYSIS
-// ============================================================
-function analyzeSentiment(text) {
-  const positive = ['thank', 'great', 'helpful', 'good', 'excellent', 'awesome', 'love', 'amazing'];
-  const negative = ['bad', 'useless', 'terrible', 'worst', 'annoying', 'hate', 'angry', 'frustrated'];
-  const lower = text.toLowerCase();
-  if (positive.some(w => lower.includes(w))) return 'positive';
-  if (negative.some(w => lower.includes(w))) return 'negative';
-  return 'neutral';
-}
-
-// ============================================================
-// 💬 CHAT FUNCTIONS
-// ============================================================
+// ─── Chat Functions ───
 function autoResize(el) {
   el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
 }
 window.autoResize = autoResize;
+
+// ─── Convert URLs in text to clickable links ───
+function linkify(text) {
+  // Match URLs (http, https, www, etc.)
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, function(url) {
+    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:var(--nis-primary);text-decoration:underline;">' + url + '</a>';
+  });
+}
 
 function escapeHtml(s) {
   const d = document.createElement('div');
@@ -888,46 +761,22 @@ function escapeHtml(s) {
   return d.innerHTML;
 }
 
-function linkify(text) {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlRegex, function(url) {
-    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color:var(--nis-primary);text-decoration:underline;">' + url + '</a>';
-  });
-}
-
 let msgCount = 0;
 
 function addMsg(role, text) {
-  const container = document.getElementById('chatMessages');
+  const container = $('#chatMessages');
   const div = document.createElement('div');
   div.className = 'msg msg-' + role;
   const label = role === 'bot' ? 'Nissy' : 'You';
   
-  let formatted = escapeHtml(text);
+  let formatted = text;
   if (role === 'bot') {
-    formatted = linkify(formatted);
-    // Format bullet points
-    const lines = formatted.split('\n');
-    if (lines.length > 1) {
-      let html = '';
-      let inBullets = false;
-      for (let line of lines) {
-        line = line.trim();
-        if (!line) continue;
-        if (line.startsWith('- ') || line.startsWith('• ') || line.startsWith('* ')) {
-          if (!inBullets) { html += '<ul>'; inBullets = true; }
-          html += '<li>' + line.replace(/^[-•*]\s*/, '') + '</li>';
-        } else {
-          if (inBullets) { html += '</ul>'; inBullets = false; }
-          html += '<p>' + line + '</p>';
-        }
-      }
-      if (inBullets) html += '</ul>';
-      formatted = html;
-    }
+    formatted = formatBotMessage(text);
+  } else {
+    formatted = escapeHtml(text);
   }
   
-  div.innerHTML = '<span class="msg-role">' + label + '</span>' + formatted;
+  div.innerHTML = '<span class="msg-role">' + label + '</span><span>' + formatted + '</span>';
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
   msgCount++;
@@ -937,8 +786,51 @@ function addMsg(role, text) {
   }
 }
 
+function formatBotMessage(text) {
+  // First, convert URLs to links (after escaping)
+  text = escapeHtml(text);
+  text = linkify(text);
+  
+  const lines = text.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.length > 0; });
+  if (lines.length === 0) return '';
+  if (lines.length === 1) return text;
+  
+  var html = '';
+  var i = 0;
+  if (lines[0].length > 0 && !lines[0].startsWith('-')) {
+    html += '<strong>' + lines[0] + '</strong><br>';
+    i = 1;
+  }
+  var bullets = [];
+  var context = [];
+  var inContext = false;
+  for (; i < lines.length; i++) {
+    var line = lines[i];
+    if (line.startsWith('- ') || line.startsWith('• ') || line.startsWith('* ')) {
+      bullets.push('<li>' + line.replace(/^[-•*]\s*/, '') + '</li>');
+      inContext = false;
+    } else if (line.match(/^(note|additional|extra|context|summary|remember|important|please|also|keep in mind|however|note that|key point)/i)) {
+      inContext = true;
+      context.push(line);
+    } else if (inContext) {
+      context[context.length - 1] += '<br>' + line;
+    } else if (bullets.length > 0) {
+      bullets.push('<li>' + line + '</li>');
+    } else {
+      html += '<p>' + line + '</p>';
+    }
+  }
+  if (bullets.length > 0) {
+    html += '<ul>' + bullets.join('') + '</ul>';
+  }
+  if (context.length > 0) {
+    html += '<div class="msg-context">' + context.join('<br>') + '</div>';
+  }
+  return html;
+}
+
 function showTyping() {
-  const container = document.getElementById('chatMessages');
+  const container = $('#chatMessages');
   const div = document.createElement('div');
   div.className = 'typing';
   div.id = 'typingIndicator';
@@ -948,12 +840,12 @@ function showTyping() {
 }
 
 function hideTyping() {
-  const el = document.getElementById('typingIndicator');
+  const el = $('#typingIndicator');
   if (el) el.remove();
 }
 
 function showError(text) {
-  const container = document.getElementById('chatMessages');
+  const container = $('#chatMessages');
   const div = document.createElement('div');
   div.className = 'error-msg';
   div.textContent = text;
@@ -963,22 +855,14 @@ function showError(text) {
 
 async function sendMessage(e) {
   if (e) e.preventDefault();
-  const input = document.getElementById('chatInput');
+  const input = $('#chatInput');
   const text = input.value.trim();
   if (!text) return;
-
-  // Check for crisis
-  if (checkForCrisis(text)) {
-    showCrisisBanner();
-  }
-
-  // Advance journey
-  advanceJourney();
 
   input.value = '';
   input.style.height = 'auto';
   input.focus();
-  document.getElementById('sendBtn').disabled = true;
+  $('#sendBtn').disabled = true;
 
   addMsg('user', escapeHtml(text));
   showTyping();
@@ -989,9 +873,7 @@ async function sendMessage(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         message: text, 
-        session_id: sessionId,
-        language: currentLanguage,
-        persona: currentPersona
+        session_id: sessionId 
       })
     });
     const data = await res.json();
@@ -1006,12 +888,16 @@ async function sendMessage(e) {
     showError('Network error. Please check your connection and try again.');
   }
 
-  document.getElementById('sendBtn').disabled = false;
+  $('#sendBtn').disabled = false;
+  if (msgCount >= 3) {
+    const chips = $('#suggestionChips');
+    if (chips) chips.style.display = 'none';
+  }
 }
 window.sendMessage = sendMessage;
 
 function quickQuestion(el) {
-  const input = document.getElementById('chatInput');
+  const input = $('#chatInput');
   input.value = el.getAttribute('data-q') || el.textContent;
   input.focus();
   sendMessage(new Event('submit'));
@@ -1019,28 +905,19 @@ function quickQuestion(el) {
 window.quickQuestion = quickQuestion;
 
 function clearChat() {
-  const container = document.getElementById('chatMessages');
+  const container = $('#chatMessages');
   container.innerHTML = '<div class="msg msg-bot"><span class="msg-role">Nissy</span><span>Hello! I\'m Nissy, the NIS Grenada digital assistant. I can help you with pensions, contributions, benefits, grants, and more. What would you like to know?</span></div>';
   msgCount = 0;
-  updateJourneyProgress(0);
-  ratingSubmitted = false;
-  document.getElementById('ratingBarBtn').textContent = '⭐ Rate Nissy';
-  document.getElementById('ratingBarBtn').disabled = false;
-  document.getElementById('ratingThanksMsg').style.display = 'none';
-  document.getElementById('quickStars').classList.remove('show');
+  const chips = $('#suggestionChips');
+  if (chips) chips.style.display = '';
 }
 window.clearChat = clearChat;
 
-function openForms() {
-  window.open('https://nisgrenada.org/downloads-2/', '_blank');
-}
-window.openForms = openForms;
-
-// ============================================================
-// 🔊 TTS
-// ============================================================
+// ─── TTS ───
 let ttsEnabled = false;
+let ttsSpeaking = false;
 let audioCtx = null;
+let audioSource = null;
 
 function ensureAudioContext() {
   if (!audioCtx || audioCtx.state === 'closed') {
@@ -1058,6 +935,9 @@ window.toggleTTS = function() {
     btn.style.background = ttsEnabled ? 'rgba(0,168,89,.2)' : '';
     btn.style.color = ttsEnabled ? 'var(--nis-primary)' : '';
   }
+  if (!ttsEnabled && ttsSpeaking) {
+    ttsSpeaking = false;
+  }
 };
 
 function speakText(text) {
@@ -1068,21 +948,28 @@ function speakText(text) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ text: text.slice(0, 500) })
   })
-  .then(res => res.arrayBuffer())
-  .then(buf => audioCtx.decodeAudioData(buf))
-  .then(decoded => {
-    const src = audioCtx.createBufferSource();
-    const gain = audioCtx.createGain();
+  .then(function(res) { return res.arrayBuffer(); })
+  .then(function(buf) {
+    return audioCtx.decodeAudioData(buf.slice(0));
+  })
+  .then(function(decoded) {
+    var src = audioCtx.createBufferSource();
+    var gain = audioCtx.createGain();
     gain.gain.value = 0.9;
     src.buffer = decoded;
     src.connect(gain);
     gain.connect(audioCtx.destination);
+    audioSource = src;
+    ttsSpeaking = true;
+    src.onended = function() {
+      ttsSpeaking = false;
+      audioSource = null;
+    };
     src.start();
   })
-  .catch(() => {});
+  .catch(function() {});
 }
 
-// Override addMsg to speak bot messages
 const _origAddMsg = addMsg;
 addMsg = function(role, text) {
   _origAddMsg(role, text);
@@ -1091,9 +978,7 @@ addMsg = function(role, text) {
   }
 };
 
-// ============================================================
-// 🎙️ VOICE NOTE
-// ============================================================
+// ─── Voice Note ───
 let noteRec = null;
 let noteRecActive = false;
 
@@ -1137,48 +1022,63 @@ function stopVoiceNote() {
   if (noteRec) { try { noteRec.stop(); } catch(e) {} noteRec = null; }
 }
 
-// ============================================================
-// 🎨 THEME
-// ============================================================
-const THEME_KEY = 'nis_demo_theme';
-const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
-document.documentElement.setAttribute('data-theme', savedTheme);
-document.querySelectorAll('.theme-option').forEach(el => {
-  el.classList.toggle('active', el.dataset.themeVal === savedTheme);
-});
+// ─── Particles ───
+let particleCtx, particleW, particleH, particles = [], particleTheme = '';
 
-window.setTheme = function(name) {
-  document.documentElement.setAttribute('data-theme', name);
-  localStorage.setItem(THEME_KEY, name);
-  document.querySelectorAll('.theme-option').forEach(el => {
-    el.classList.toggle('active', el.dataset.themeVal === name);
-  });
-  closeThemePicker();
-};
+function getParticleColor(theme) {
+  const map = { dark:'0,168,89', light:'0,168,89', purple:'120,80,255', ocean:'6,182,212', amber:'245,158,11' };
+  return map[theme] || map.dark;
+}
 
-window.toggleThemePicker = function() {
-  document.getElementById('themePicker').classList.toggle('open');
-};
-
-window.closeThemePicker = function() {
-  document.getElementById('themePicker').classList.remove('open');
-};
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.theme-btn') && !e.target.closest('.theme-picker')) {
-    const picker = document.getElementById('themePicker');
-    if (picker) picker.classList.remove('open');
+function restartParticles(theme) {
+  particleTheme = theme;
+  const color = getParticleColor(theme);
+  if (!particleCtx) return;
+  for (const p of particles) {
+    p.a = Math.random()*.3+.05;
   }
-});
+}
 
-// ============================================================
-// 🚀 INIT
-// ============================================================
-updateJourneyProgress(0);
-console.log('🚀 Nissy is ready!');
-console.log('📋 Session:', sessionId);
-console.log('🌐 Language:', currentLanguage);
-console.log('👤 Persona:', currentPersona);
+function initParticles() {
+  const c = document.getElementById('bg-particles');
+  if (!c) return;
+  particleCtx = c.getContext('2d');
+  const ctx = particleCtx;
+  function resize(){ particleW = c.width = window.innerWidth; particleH = c.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  particleTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  for (let i = 0; i < 40; i++) {
+    particles.push({ x: Math.random()*particleW, y: Math.random()*particleH, r: Math.random()*2+1, dx: (Math.random()-.5)*.3, dy: (Math.random()-.5)*.3, a: Math.random()*.3+.05 });
+  }
+  function draw() {
+    ctx.clearRect(0,0,particleW,particleH);
+    const color = getParticleColor(particleTheme);
+    for (const p of particles) {
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0) p.x = particleW; if (p.x > particleW) p.x = 0; if (p.y < 0) p.y = particleH; if (p.y > particleH) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(' + color + ',' + p.a + ')'; ctx.fill();
+    }
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i+1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120) {
+          ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = 'rgba(' + color + ',' + (.05 * (1 - dist/120)) + ')';
+          ctx.lineWidth = .5; ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+initParticles();
 
 })();
 </script>

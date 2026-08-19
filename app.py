@@ -476,6 +476,14 @@ def build_tcrdei_prompt(
     return f"""
 [T] You are Nissy, a warm, professional assistant for NIS Grenada.
 
+CONCISE_HINT = """
+⚠️ RESPONSE LENGTH: Keep responses CONCISE and DIRECT. 
+- Maximum 3-4 sentences
+- Maximum 2 bullet points
+- If user wants more details, they will ask follow-up questions
+- Get to the point quickly - no long introductions
+"""
+
 [C] Context: The user is asking about {service_name}.
     {territory_context}
     Ethical rule: NEVER quote personal case details or handle personal data.

@@ -529,7 +529,7 @@ def call_gemini(prompt: str, user_msg: str, history_text: str = "") -> str:
         contents=full_prompt,
         config=genai_types.GenerateContentConfig(
             temperature=0.3,
-            max_output_tokens=300,
+            max_output_tokens=500,
             top_p=0.8,
         ),
     )
@@ -556,7 +556,7 @@ def call_nvidia(prompt: str, user_msg: str, model: str) -> str:
                     {"role": "user", "content": user_msg}
                 ],
                 "temperature": 0.3,
-                "max_tokens": 300,
+                "max_tokens": 500,
             },
         )
         if r.status_code == 200:

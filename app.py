@@ -102,6 +102,47 @@ def detect_territory(msg: str) -> dict:
     return None
 
 # ==============================================================================
+# 👤 AXIS 4: PERSONA (who the user IS, not how they're feeling or which
+# territory they're in)
+# ==============================================================================
+# 📌 NEW: The client's discovery brief names 3 groups this bot serves —
+# Customers, Employees, Management. We can only meaningfully detect ONE
+# of those from a public chat widget: a claimant/individual member
+# (the default) vs. an employer/HR contact asking about registering
+# staff or remitting contributions. "Employees" (NIS's own staff wanting
+# relief from repetitive answers) and "Management" (wanting a usage
+# overview) aren't things a person types into the chat as themselves —
+# those needs are better served by the ratings log / a future internal
+# dashboard, not a persona the bot detects mid-conversation. We're being
+# upfront about that limit rather than pretending to detect something
+# we can't.
+PERSONAS = {
+    "employer": {
+        "label": "Employer / HR contact",
+        "keywords": [
+            "register as an employer", "employer registration", "new business registration",
+            "remit contributions", "remit for my staff", "my employees' contributions",
+            "payroll deduction", "register my staff", "our employees", "as an employer",
+        ],
+        "focus": "They're asking on behalf of a business, not about their own personal benefits. Focus on employer registration, the 7.25% employer contribution share, remittance deadlines, and payroll obligations — not personal benefit eligibility.",
+    },
+}
+
+def detect_persona(msg: str) -> str:
+    """
+    Looks for keywords that signal an employer/HR contact rather than an
+    individual member asking about their own benefits (the default).
+    Returns "employer" if matched, otherwise None — in which case the
+    bot treats the user as an individual member, which is the right
+    default for a public benefits chatbot.
+    """
+    m = msg.lower()
+    for key, data in PERSONAS.items():
+        if any(kw in m for kw in data["keywords"]):
+            return key
+    return None
+
+# ==============================================================================
 # 🚨 DISTRESS DETECTION
 # ==============================================================================
 DISTRESS_TRIGGERS = {
@@ -161,6 +202,10 @@ def get_history_text(session_id: str) -> str:
 # ==============================================================================
 JOURNEY_STEPS = ["greeting", "identify_need", "collect_facts", "offer_next_step", "confirm_close"]
 session_states = {}
+
+# 📌 NEW: remembers which persona (employer vs. individual member) we've
+# detected for each session, so it "sticks" across turns.
+session_personas = {}
 
 def get_journey_step(session_id: str) -> str:
     step_idx = session_states.get(session_id, 0)
@@ -386,6 +431,7 @@ BASE_SYSTEM_PROMPT = """You are Nissy, a warm, professional, and knowledgeable a
 
 {register_hint}
 {journey_hint}
+{persona_hint}
 {language_hint}
 
 NIS GRENADA - COMPLETE BENEFITS INFORMATION (2026):
@@ -621,6 +667,15 @@ def chat():
     territory = detect_territory(safe_message)
     language = detect_language(safe_message)
 
+    # 📌 NEW: persona detection, remembered per session (like journey step)
+    # so a follow-up message like "what's the deadline for that?" doesn't
+    # lose the earlier context that this is an employer, not an individual
+    # member.
+    detected_persona = detect_persona(safe_message)
+    if detected_persona:
+        session_personas[session_id] = detected_persona
+    persona = session_personas.get(session_id)
+
     territory_context = f"Territory detected: {territory['country']}. Office: {territory['office']}." if territory else "Office: Melville St, St George's."
 
     register_hints = {
@@ -639,12 +694,18 @@ def chat():
         "confirm_close": "Wrap up warmly. Confirm they have what they need.",
     }
 
+    if persona and persona in PERSONAS:
+        persona_hint = f"USER TYPE: {PERSONAS[persona]['label']}. {PERSONAS[persona]['focus']}"
+    else:
+        persona_hint = "USER TYPE: Individual member asking about their own benefits (the default). Keep the focus on personal benefit information unless they indicate otherwise."
+
     history_text = get_history_text(session_id)
 
     full_prompt = BASE_SYSTEM_PROMPT.format(
         territory_context=territory_context,
         register_hint=register_hints.get(register, register_hints["warm"]),
         journey_hint=journey_hints.get(current_step, journey_hints["greeting"]),
+        persona_hint=persona_hint,
         language_hint=LANGUAGE_HINTS.get(language, LANGUAGE_HINTS["en"]),
         history=history_text,
         user_message=safe_message,
@@ -682,6 +743,7 @@ def chat():
         "reply": reply,
         "session_id": session_id,
         "register": register,
+        "persona": persona,
         "ai_used": engine_used,  # 📌 now reflects what ACTUALLY answered this turn
     })
 

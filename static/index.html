@@ -323,9 +323,46 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 @keyframes voicePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 0 0 8px rgba(239,68,68,0)}}
 
 /* ─── Suggestion Chips ─── */
-.suggestion-chips{display:flex;gap:8px;padding:12px 20px;border-top:1px solid var(--glass-border);flex-wrap:wrap}
+.suggestion-chips{display:flex;gap:8px;padding:12px 20px;border-top:1px solid var(--glass-border);flex-wrap:wrap;align-items:center}
 .suggestion-chip{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;background:var(--chip-bg);border:1px solid var(--chip-border);color:var(--secondary);cursor:pointer;transition:all .2s;white-space:nowrap}
 .suggestion-chip:hover{background:var(--chip-hover-bg);color:var(--chip-hover-color);border-color:var(--chip-border)}
+
+/* ─── External Link Chip (Forms & Downloads) ─── */
+.suggestion-chip.external {
+  background: var(--nis-primary);
+  color: #fff;
+  border-color: var(--nis-primary);
+  font-weight: 600;
+}
+.suggestion-chip.external:hover {
+  background: var(--nis-primary-dark);
+  border-color: var(--nis-primary-dark);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,168,89,0.3);
+}
+.suggestion-chip.external .external-icon {
+  display: inline-block;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+.suggestion-chip.external:hover .external-icon {
+  transform: translate(2px, -2px);
+}
+.suggestion-chip.external svg {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.suggestion-chip.external .link-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 4px;
+  transition: transform 0.2s ease;
+}
+.suggestion-chip.external:hover .link-icon {
+  transform: translate(2px, -2px);
+}
 
 /* ─── Rating Bar ─── */
 .rating-bar{padding:0.85rem 2.5rem;border-top:1px solid var(--chat-border);background:var(--chat-header-bg);display:flex;align-items:center;justify-content:center;gap:0.75rem;flex-wrap:wrap}
@@ -394,6 +431,8 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .rating-modal-content{padding:1.5rem}
   .call-card{padding:24px 28px;min-width:240px}
   .call-timer{font-size:36px}
+  .suggestion-chips{gap:6px}
+  .suggestion-chip{font-size:11px;padding:4px 10px}
 }
 @media (max-width:480px){
   .demo-nav .badge{display:none}
@@ -511,12 +550,29 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
         </div>
       </form>
 
+      <!-- ─── SUGGESTION CHIPS WITH FORMS BUTTON ─── -->
       <div class="suggestion-chips" id="suggestionChips">
         <span class="suggestion-chip" onclick="quickQuestion(this)">How do I apply for pension?</span>
         <span class="suggestion-chip" onclick="quickQuestion(this)">What are NIS contributions?</span>
         <span class="suggestion-chip" onclick="quickQuestion(this)">Survivor benefits</span>
         <span class="suggestion-chip" onclick="quickQuestion(this)">How to check my contributions?</span>
         <span class="suggestion-chip" onclick="quickQuestion(this)">Maternity benefit</span>
+        <!-- ⭐ FORMS & DOWNLOADS BUTTON - External Link -->
+        <span class="suggestion-chip external" onclick="openForms()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          Forms &amp; Downloads
+          <svg class="link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </span>
       </div>
 
       <!-- ⭐ RATING BAR -->
@@ -637,6 +693,12 @@ document.addEventListener('click', function(e) {
     if (picker) picker.classList.remove('open');
   }
 });
+
+// ─── FORMS & DOWNLOADS BUTTON ───
+window.openForms = function() {
+  // Opens the NIS Grenada downloads page in a new tab
+  window.open('https://nisgrenada.org/downloads-2/', '_blank');
+};
 
 // ─── Rating Modal Functions ───
 window.openRatingModal = function() {

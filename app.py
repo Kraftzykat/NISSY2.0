@@ -8,9 +8,9 @@ IMPROVED VERSION with:
 4. Sentiment analysis
 5. Task completion system
 6. Health check endpoint
-7. Better error handling
-8. More comments for students
-"""
+7. Better error handling 
+### 
+
 
 import json
 import os

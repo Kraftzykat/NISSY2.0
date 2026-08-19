@@ -392,25 +392,6 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .rating-thanks{font-size:0.95rem;color:var(--fg);font-weight:600;display:none}
 .rating-thanks.show{display:block}
 
-/* ─── Call Overlay ─── */
-.call-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:500;backdrop-filter:blur(4px)}
-.call-overlay.active{display:flex}
-.call-card{background:var(--bg2);border:1px solid var(--glass-border);border-radius:20px;padding:32px 40px;text-align:center;min-width:280px;box-shadow:0 24px 64px rgba(0,0,0,.5)}
-.call-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;margin:0 auto 16px;overflow:hidden}
-.call-avatar img{width:100%;height:100%;object-fit:cover}
-.call-name{font-size:18px;font-weight:700;color:var(--fg);margin-bottom:4px}
-.call-status{font-size:13px;color:var(--nis-primary);margin-bottom:24px}
-.call-timer{font-size:48px;font-weight:700;color:var(--fg);font-variant-numeric:tabular-nums;margin-bottom:24px;letter-spacing:2px}
-.call-actions{display:flex;align-items:center;justify-content:center;gap:24px}
-.call-btn{width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.call-btn.hangup{background:rgba(239,68,68,.15);color:#ef4444}
-.call-btn.hangup:hover{background:rgba(239,68,68,.3)}
-.call-btn.hangup svg{width:24px;height:24px}
-.call-btn.mute{background:var(--glass);color:var(--secondary);border:1px solid var(--glass-border)}
-.call-btn.mute:hover{background:var(--chip-hover-bg);color:var(--fg)}
-.call-btn.mute svg{width:20px;height:20px}
-.call-btn.mute.muted{background:rgba(239,68,68,.15);color:#ef4444;border-color:rgba(239,68,68,.3)}
-
 /* ─── Error ─── */
 .error-msg{align-self:center;padding:8px 16px;border-radius:8px;font-size:12px;background:rgba(206,17,38,.1);border:1px solid rgba(206,17,38,.2);color:#fca5a5}
 
@@ -429,8 +410,6 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
   .rating-bar{padding:0.65rem 1.5rem}
   .star-row{font-size:1.9rem}
   .rating-modal-content{padding:1.5rem}
-  .call-card{padding:24px 28px;min-width:240px}
-  .call-timer{font-size:36px}
   .suggestion-chips{gap:6px}
   .suggestion-chip{font-size:11px;padding:4px 10px}
 }
@@ -521,9 +500,6 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
         </div>
         <div class="chat-header-actions">
           <div class="voice-status" id="voiceStatus"><span class="dot"></span> Voice</div>
-          <button onclick="toggleVoiceCall()" id="voiceCallBtn" title="Voice call" aria-label="Toggle voice call">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          </button>
           <button onclick="toggleTTS()" id="ttsBtn" title="Text-to-Speech" aria-label="Toggle TTS">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg>
           </button>
@@ -580,27 +556,6 @@ button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
         <span class="rating-bar-label">💬 Was this helpful?</span>
         <button class="rating-bar-btn" id="ratingBarBtn" onclick="openRatingModal()">⭐ Rate Nissy</button>
         <span id="ratingThanksMsg" style="display:none; font-size:0.85rem; color:var(--nis-primary); font-weight:600;">🙏 Thanks for your feedback!</span>
-      </div>
-    </div>
-
-    <!-- Call Overlay -->
-    <div class="call-overlay" id="callOverlay">
-      <div class="call-card">
-        <div class="call-avatar">
-          <img src="/static/favicon-64.png" alt="Nissy" onerror="this.style.display='none'">
-          <span style="display:none;">N</span>
-        </div>
-        <div class="call-name">Nissy</div>
-        <div class="call-status" id="callStatus">Connected</div>
-        <div class="call-timer" id="callTimer">00:00</div>
-        <div class="call-actions">
-          <button class="call-btn mute" id="muteBtn" onclick="toggleMute()" title="Mute">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07"/><path d="M17.71 12.29a10 10 0 010 14.14M19.07 4.93a16 16 0 010 22.14"/></svg>
-          </button>
-          <button class="call-btn hangup" onclick="endVoiceCall()" title="End call">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-          </button>
-        </div>
       </div>
     </div>
 
@@ -997,74 +952,9 @@ function speakText(text) {
 const _origAddMsg = addMsg;
 addMsg = function(role, text) {
   _origAddMsg(role, text);
-  if (role === 'bot' && ttsEnabled && !document.getElementById('callOverlay').classList.contains('active')) {
+  if (role === 'bot' && ttsEnabled) {
     speakText(text);
   }
-};
-
-// ─── Voice Call ───
-let voiceEnabled = false;
-
-window.toggleVoiceCall = function() {
-  voiceEnabled = !voiceEnabled;
-  const btn = document.getElementById('voiceCallBtn');
-  const status = document.getElementById('voiceStatus');
-  if (btn) {
-    btn.style.background = voiceEnabled ? 'rgba(239,68,68,.2)' : '';
-    btn.style.color = voiceEnabled ? '#ef4444' : '';
-    btn.classList.toggle('voice-active', voiceEnabled);
-  }
-  if (status) {
-    status.classList.toggle('active', voiceEnabled);
-  }
-  if (voiceEnabled) {
-    document.getElementById('callOverlay').classList.add('active');
-    startCallTimer();
-    document.getElementById('callStatus').textContent = 'Connected';
-  } else {
-    endVoiceCall();
-  }
-};
-
-let callTimerInterval = null;
-let callStartTime = null;
-
-function startCallTimer() {
-  callStartTime = Date.now();
-  callTimerInterval = setInterval(function() {
-    const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
-    const mins = Math.floor(elapsed / 60);
-    const secs = elapsed % 60;
-    const timerEl = document.getElementById('callTimer');
-    if (timerEl) timerEl.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
-  }, 1000);
-}
-
-function stopCallTimer() {
-  if (callTimerInterval) {
-    clearInterval(callTimerInterval);
-    callTimerInterval = null;
-  }
-  callStartTime = null;
-}
-
-let callMuted = false;
-
-window.toggleMute = function() {
-  callMuted = !callMuted;
-  const btn = document.getElementById('muteBtn');
-  if (btn) btn.classList.toggle('muted', callMuted);
-  document.getElementById('callStatus').textContent = callMuted ? 'Muted' : 'Connected';
-};
-
-window.endVoiceCall = function() {
-  voiceEnabled = false;
-  stopCallTimer();
-  document.getElementById('callOverlay').classList.remove('active');
-  const btn = document.getElementById('voiceCallBtn');
-  if (btn) { btn.style.background = ''; btn.style.color = ''; btn.classList.remove('voice-active'); }
-  const status = document.getElementById('voiceStatus');
-  if (status) status.classList.remove('active');
 };
 
 // ─── Voice Note ───

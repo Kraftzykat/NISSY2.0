@@ -9,7 +9,7 @@ IMPROVED VERSION with:
 5. Task completion system
 6. Health check endpoint
 7. Better error handling
-8. More comments for students
+
 """
 
 import json
